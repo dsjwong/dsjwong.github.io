@@ -8,9 +8,14 @@
 <link rel="icon" href="/assets/img/favicon.png" type="image/png">
 <meta name="theme-color" content="#FBFAF8" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#121110" media="(prefers-color-scheme: dark)">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Instrument+Serif&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+  @font-face { font-family:"Inter"; font-weight:400 600; font-display:swap;
+               src:url("/assets/fonts/inter-variable.woff2") format("woff2"); }
+  @font-face { font-family:"Instrument Serif"; font-weight:400; font-display:swap;
+               src:url("/assets/fonts/instrument-serif-400.woff2") format("woff2"); }
+  @font-face { font-family:"JetBrains Mono"; font-weight:400; font-display:swap;
+               src:url("/assets/fonts/jetbrains-mono-400.woff2") format("woff2"); }
+</style>
 <style>
   /* Same palette as css/styles.css — keep these in step if you change it. */
   :root { --paper:#FBFAF8; --ink:#17171A; --body:#4A4A50; --muted:#8A8A90; --accent:#9A3412; }

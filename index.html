@@ -80,16 +80,18 @@
 }
 </script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Fonts are served from this repo, not from Google — see the top of
+     css/styles.css for why. Preloading the two that render first stops the
+     browser waiting to discover them inside the stylesheet. -->
+<link rel="preload" href="assets/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
 
 <!-- Two stylesheets, no JavaScript libraries.
        layout.css  grid, spacing, breakpoints  (the Tailwind class names, precompiled)
        styles.css  colour, type, components     (the design system)
      Bump the ?v= number after a big CSS change so browsers refetch. -->
 <link rel="stylesheet" href="css/layout.css?v=1">
-<link rel="stylesheet" href="css/styles.css?v=12">
+<link rel="stylesheet" href="css/styles.css?v=13">
 <noscript><style>[data-reveal]{opacity:1!important;transform:none!important}</style></noscript>
 
 <!-- Applies your saved theme before first paint so there is no flash. -->
@@ -183,7 +185,7 @@ document.documentElement.classList.add('dark');})();
     <aside data-reveal class="lg:col-span-4 side-panel">
       <div class="side-row flex items-center gap-2.5">
         <span class="status-dot"></span>
-          <span class="meta">Open to Summer 2027 internships and graduate roles</span>
+          <span class="meta">Open to 2027 internships &amp; graduate roles</span>
       </div>
       <div class="side-row">
         <p class="meta mb-1.5">Currently</p>
@@ -295,56 +297,10 @@ document.documentElement.classList.add('dark');})();
     <div class="lg:col-span-10">
 
       <!-- ---------------------------------------------------------------
-           PROJECT 1 — Library Management System
-           Stack read from backend/pom.xml and frontend/package.json.
-           Test count: 98 unit (surefire) + 71 integration (failsafe) = 169.
+           PROJECT 1 — Crop Pest Detection
            --------------------------------------------------------------- -->
       <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
         <p class="lg:col-span-1 row-num">01</p>
-
-        <div class="lg:col-span-7">
-          <a href="https://github.com/dsjwong/library-management-system" class="row-title">
-            <h3 class="h3">Library Management System</h3>
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-          </a>
-          <p class="body mt-3">
-            Catalogue, borrowing and returns, reservations, fines, and role-based access for
-            members, librarians and administrators. Built as a six-person team project, then
-            substantially reworked afterwards: JWT authentication, Flyway-managed schema
-            migrations, and an integration suite that runs against a real PostgreSQL container
-            rather than an in-memory stand-in.
-          </p>
-          <div class="flex flex-wrap gap-2 mt-5">
-            <span class="tag">Java 17</span>
-            <span class="tag">Spring Boot</span>
-            <span class="tag">Spring Security</span>
-            <span class="tag">PostgreSQL</span>
-            <span class="tag">Flyway</span>
-            <span class="tag">Testcontainers</span>
-            <span class="tag">React 18</span>
-            <span class="tag">Vite</span>
-            <span class="tag">Docker</span>
-          </div>
-        </div>
-
-        <div class="lg:col-span-4 flex gap-10 lg:justify-end">
-          <div>
-            <p class="metric-value">169</p>
-            <p class="metric-label">tests passing</p>
-          </div>
-          <div>
-            <p class="metric-value">3</p>
-            <p class="metric-label">user roles</p>
-          </div>
-        </div>
-      </article>
-
-
-      <!-- ---------------------------------------------------------------
-           PROJECT 2 — Crop Pest Detection
-           --------------------------------------------------------------- -->
-      <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
-        <p class="lg:col-span-1 row-num">02</p>
 
         <div class="lg:col-span-7">
           <a href="https://github.com/dsjwong/cv-crop-pest-object-detection-benchmarking" class="row-title">
@@ -383,13 +339,13 @@ document.documentElement.classList.add('dark');})();
 
 
       <!-- ---------------------------------------------------------------
-           PROJECT 3 — StockAgent
+           PROJECT 2 — StockAgent
            The repository is PRIVATE, so this row deliberately has no link.
            Make the repo public and this becomes an <a class="row-title">
            like the others.
            --------------------------------------------------------------- -->
       <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
-        <p class="lg:col-span-1 row-num">03</p>
+        <p class="lg:col-span-1 row-num">02</p>
 
         <div class="lg:col-span-7">
           <div class="row-title">
@@ -417,6 +373,53 @@ document.documentElement.classList.add('dark');})();
           <div>
             <p class="metric-value">4</p>
             <p class="metric-label">LLM providers</p>
+          </div>
+        </div>
+      </article>
+
+
+      <!-- ---------------------------------------------------------------
+           PROJECT 3 — Library Management System
+           Stack read from backend/pom.xml and frontend/package.json.
+           Test count: 98 unit (surefire) + 71 integration (failsafe) = 169.
+           --------------------------------------------------------------- -->
+      <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
+        <p class="lg:col-span-1 row-num">03</p>
+
+        <div class="lg:col-span-7">
+          <a href="https://github.com/dsjwong/library-management-system" class="row-title">
+            <h3 class="h3">Library Management System</h3>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </a>
+          <p class="body mt-3">
+            169 tests — 98 unit and 71 integration, the integration suite running against a
+            real PostgreSQL container rather than an in-memory stand-in — over a schema
+            managed entirely by Flyway migrations, with JWT authentication and role-based
+            access across three user types. Started as a six-person team project and was
+            substantially reworked afterwards. The domain is an ordinary one: catalogue,
+            borrowing, reservations and fines.
+          </p>
+          <div class="flex flex-wrap gap-2 mt-5">
+            <span class="tag">Java 17</span>
+            <span class="tag">Spring Boot</span>
+            <span class="tag">Spring Security</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Flyway</span>
+            <span class="tag">Testcontainers</span>
+            <span class="tag">React 18</span>
+            <span class="tag">Vite</span>
+            <span class="tag">Docker</span>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 flex gap-10 lg:justify-end">
+          <div>
+            <p class="metric-value">169</p>
+            <p class="metric-label">tests passing</p>
+          </div>
+          <div>
+            <p class="metric-value">3</p>
+            <p class="metric-label">user roles</p>
           </div>
         </div>
       </article>

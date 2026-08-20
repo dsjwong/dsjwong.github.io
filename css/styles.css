@@ -1,4 +1,58 @@
 /* ==========================================================================
+   FONTS  —  self-hosted
+   ==========================================================================
+
+   These files are served from this repo rather than from Google Fonts. Three
+   reasons, in order of how much they matter here:
+
+   1. fonts.googleapis.com is BLOCKED IN MAINLAND CHINA. Loading fonts from
+      Google means anyone viewing from the mainland waits for a request that
+      never completes, then sees the page in fallback system fonts. Given
+      where you are applying, that is not a hypothetical audience.
+   2. Speed. Google Fonts costs two extra DNS lookups and two extra TLS
+      handshakes to two more hosts before a single glyph arrives. Self-hosted
+      fonts come down the connection the page is already using.
+   3. Privacy. Requesting fonts from Google hands every visitor's IP address
+      to Google. German courts have ruled that this breaches GDPR when done
+      without consent.
+
+   Inter is a VARIABLE font: one 47 KB file covers every weight from 400 to
+   600, where three separate static weights would have cost 138 KB.
+
+   font-display: swap means text is painted immediately in the fallback font
+   and re-painted when the real one arrives — the page is never invisible
+   while a font loads.
+
+   To change a typeface: download the .woff2 from the foundry, drop it in
+   assets/fonts/, and edit the src and font-family below.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 600;                  /* variable range, not a single weight */
+  font-display: swap;
+  src: url("../assets/fonts/inter-variable.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/instrument-serif-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/jetbrains-mono-400.woff2") format("woff2");
+}
+
+
+/* ==========================================================================
    styles.css  —  the design system
    ==========================================================================
 
