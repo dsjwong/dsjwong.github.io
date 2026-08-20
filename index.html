@@ -89,7 +89,7 @@
        styles.css  colour, type, components     (the design system)
      Bump the ?v= number after a big CSS change so browsers refetch. -->
 <link rel="stylesheet" href="css/layout.css?v=1">
-<link rel="stylesheet" href="css/styles.css?v=11">
+<link rel="stylesheet" href="css/styles.css?v=12">
 <noscript><style>[data-reveal]{opacity:1!important;transform:none!important}</style></noscript>
 
 <!-- Applies your saved theme before first paint so there is no flash. -->
@@ -454,11 +454,17 @@ document.documentElement.classList.add('dark');})();
       </article>
 
 
-      <!-- ---------------------------------------------------------------
-           BLANK TEMPLATE. Copy this whole article element to add a project,
-           paste it above, then delete the style="display:none" from the copy.
-           --------------------------------------------------------------- -->
-      <article class="row grid lg:grid-cols-12 gap-x-8 gap-y-6" style="display:none">
+      <!-- ===================================================================
+           BLANK PROJECT TEMPLATE
+
+           To add a project: copy the markup below, paste it above this
+           comment, and remove the surrounding comment markers from the copy.
+           Then set the row number and fill in the content.
+
+           It is kept commented rather than hidden with CSS so that the
+           placeholder GitHub link is not in the page for a crawler to follow.
+
+      <article class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
         <p class="lg:col-span-1 row-num">00</p>
         <div class="lg:col-span-7">
           <a href="https://github.com/dsjwong/REPO" class="row-title">
@@ -476,6 +482,7 @@ document.documentElement.classList.add('dark');})();
           <div><p class="metric-value">00</p><p class="metric-label">metric</p></div>
         </div>
       </article>
+           =================================================================== -->
 
       <div data-reveal class="mt-10">
         <!-- EDIT: your GitHub username -->
