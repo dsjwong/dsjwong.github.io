@@ -1,0 +1,424 @@
+/* ==========================================================================
+   styles.css  —  the design system
+   ==========================================================================
+
+   Tailwind (loaded in index.html) handles LAYOUT only: grids, spacing,
+   flexbox, responsive breakpoints.
+
+   This file handles everything you can SEE: colour, type, borders, hover
+   states. index.html uses short class names like  .h2  .row  .tag  .btn
+   and they are all defined here.
+
+   THE THREE THINGS YOU ARE MOST LIKELY TO WANT TO CHANGE:
+     1. The palette          — section 1, immediately below
+     2. Corner roundness     — --radius, section 1
+     3. The row hover effect — section 8
+
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   1. PALETTE
+   --------------------------------------------------------------------------
+   Every colour on the site comes from these six variables. Change --accent
+   and the whole site re-skins: links, hover states, the section numbers,
+   the underlines.
+
+   Three alternative accents, if rust is not to your taste. Swap both the
+   :root and the .dark value together, the dark one is a lighter version so
+   it stays readable on a dark background.
+
+       Deep teal      light #0F5F57   dark #4FC4B4
+       Ink blue       light #1D4ED8   dark #7C9CFF
+       Forest         light #15803D   dark #4ADE80
+   -------------------------------------------------------------------------- */
+
+:root {
+  --paper:   #FBFAF8;   /* page background - warm off-white, not pure white  */
+  --surface: #FFFFFF;   /* raised things: the hero side panel                */
+  --ink:     #17171A;   /* headings and strong text                          */
+  --body:    #4A4A50;   /* paragraphs                                        */
+  --muted:   #8A8A90;   /* labels, dates, metadata                           */
+  --line:    #E4E1DA;   /* hairline rules and borders                        */
+  --accent:  #9A3412;   /* rust                                              */
+  --accent-2:#7C2D12;   /* darker rust, for hover                            */
+
+  --radius: 10px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+.dark {
+  --paper:   #121110;   /* warm near-black, NOT navy                         */
+  --surface: #1A1917;
+  --ink:     #F2F0EB;
+  --body:    #ACA79E;
+  --muted:   #78736B;
+  --line:    #2B2825;
+  --accent:  #E8845C;
+  --accent-2:#F2A183;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   2. BASE
+   -------------------------------------------------------------------------- */
+
+html { scroll-behavior: smooth; }
+
+/* --------------------------------------------------------------------------
+   SCALING FOR LARGE MONITORS
+   --------------------------------------------------------------------------
+   Every size on this site is written in rem, which means "multiples of the
+   root font size". So changing that one number scales the ENTIRE layout
+   together - text, padding, gaps, and the container width - instead of just
+   adding more empty margin at the sides.
+
+       16px up to 1440px wide   (laptop: unchanged)
+       ~17.7px at 1920px        (24 inch monitor)
+       20px at 2560px and above (27 inch and up)
+
+   This is why the site fills a big screen instead of sitting in the middle
+   of it. If a large monitor still feels too roomy, raise the 20px cap.
+   -------------------------------------------------------------------------- */
+:root { font-size: clamp(16px, 0.357vw + 10.86px, 20px); }
+
+body {
+  background: var(--paper);
+  color: var(--body);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11", "ss01";
+}
+
+::selection { background: var(--accent); color: #fff; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 100;
+  padding: .75rem 1.25rem; background: var(--accent); color: #fff;
+  font-size: .875rem; font-weight: 500;
+}
+.skip-link:focus { left: 0; }
+
+/* The container every section sits in. Two jobs:
+     max-width  stops lines getting unreadably long on a big monitor
+     padding    scales with the viewport so it never touches the edge on a phone
+   This pair is what makes a site work at 375px and at 2560px. */
+.wrap {
+  width: 100%;
+  max-width: 84rem;                          /* see note above: this grows with
+                                                the root font size, so it is
+                                                1344px on a laptop and ~1680px
+                                                on a 27 inch monitor */
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 5vw, 3rem); /* 20px on a phone, 48px on a desktop */
+}
+
+/* Sections are separated by a hairline, not by a colour block.
+   Vertical rhythm scales with the viewport too, so a phone is not scrolling
+   through desktop-sized gaps. */
+.section {
+  padding-block: clamp(3.5rem, 9vw, 7rem);
+  scroll-margin-top: 5rem;
+  border-top: 1px solid var(--line);
+}
+
+
+/* --------------------------------------------------------------------------
+   3. NAVIGATION
+   -------------------------------------------------------------------------- */
+
+.nav-link {
+  font-family: var(--font-mono);
+  font-size: .75rem; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--muted);
+  padding: .5rem .25rem;
+  position: relative;
+  transition: color .2s;
+}
+.nav-link::after {
+  content: ""; position: absolute; left: .25rem; right: .25rem; bottom: .3rem;
+  height: 1px; background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .3s var(--ease);
+}
+.nav-link:hover { color: var(--ink); }
+.nav-link:hover::after { transform: scaleX(1); }
+
+.nav-mark {
+  font-family: var(--font-display);
+  font-size: 1.5rem; color: var(--ink); letter-spacing: -.01em;
+}
+.nav-mark span { color: var(--accent); }
+
+#nav.is-scrolled {
+  background: color-mix(in srgb, var(--paper) 85%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+
+.icon-btn {
+  display: inline-flex; padding: .5rem; border-radius: var(--radius);
+  color: var(--muted); transition: color .2s, background-color .2s;
+}
+.icon-btn:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 6%, transparent); }
+
+
+/* --------------------------------------------------------------------------
+   4. TYPOGRAPHY
+   -------------------------------------------------------------------------- */
+
+/* The small mono label that sits in the left rail of every section. */
+.rail-label {
+  font-family: var(--font-mono);
+  font-size: .6875rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--muted);
+}
+.rail-num { color: var(--accent); }
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -.02em;
+  line-height: .95;
+}
+
+.h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.05; letter-spacing: -.02em;
+  color: var(--ink);
+}
+
+.h3 {
+  font-size: 1.1875rem; font-weight: 600; letter-spacing: -.01em;
+  color: var(--ink);
+}
+
+.lede { font-size: clamp(1.125rem, 2vw, 1.375rem); line-height: 1.6; color: var(--body); }
+.body { font-size: 1rem; line-height: 1.75; color: var(--body); }
+.body strong { color: var(--ink); font-weight: 600; }
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: .75rem; color: var(--muted); letter-spacing: .02em;
+}
+
+
+/* --------------------------------------------------------------------------
+   5. BUTTONS AND LINKS
+   -------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .75rem 1.375rem;
+  border-radius: var(--radius);
+  font-size: .9375rem; font-weight: 500;
+  border: 1px solid transparent;
+  transition: all .25s var(--ease);
+}
+.btn-solid { background: var(--ink); color: var(--paper); }
+.btn-solid:hover { background: var(--accent); }
+
+.btn-line { border-color: var(--line); color: var(--ink); }
+.btn-line:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Inline text link with an animated underline. */
+.link {
+  color: var(--ink);
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 0% 1px; background-repeat: no-repeat; background-position: 0 100%;
+  transition: background-size .3s var(--ease), color .2s;
+}
+.link:hover { color: var(--accent); background-size: 100% 1px; }
+
+/* The big email link in the contact section. */
+.link-xl {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 5vw, 3.25rem);
+  line-height: 1.1; color: var(--ink);
+  display: inline-flex; align-items: center; gap: .75rem;
+  transition: color .25s;
+}
+.link-xl:hover { color: var(--accent); }
+.link-xl svg { transition: transform .3s var(--ease); }
+.link-xl:hover svg { transform: translate(4px, -4px); }
+
+
+/* --------------------------------------------------------------------------
+   6. TAGS AND METRICS
+   -------------------------------------------------------------------------- */
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: .6875rem; letter-spacing: .01em;
+  color: var(--muted);
+  padding: .1875rem .5rem;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  white-space: nowrap;
+  transition: border-color .2s, color .2s;
+}
+.row:hover .tag { border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); }
+
+.metric-value {
+  font-family: var(--font-display);
+  font-size: 1.75rem; line-height: 1; color: var(--ink);
+}
+.metric-label {
+  font-family: var(--font-mono);
+  font-size: .625rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); margin-top: .375rem;
+}
+
+
+/* --------------------------------------------------------------------------
+   7. HERO
+   -------------------------------------------------------------------------- */
+
+/* Fluid type: never smaller than 3rem, never larger than 7.5rem, and
+   proportional to the viewport in between. No breakpoints needed. */
+.hero-name { font-size: clamp(3rem, 10vw, 7.5rem); }
+
+/* The panel to the right of your name. */
+.side-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+}
+
+.side-row {
+  padding-block: .875rem;
+  border-bottom: 1px solid var(--line);
+}
+.side-row:last-of-type { border-bottom: 0; padding-bottom: 0; }
+.side-row:first-of-type { padding-top: 0; }
+
+.status-dot {
+  position: relative; display: inline-block;
+  width: .5rem; height: .5rem; border-radius: 50%; background: #16A34A;
+}
+.status-dot::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: #16A34A; animation: ping 2.4s cubic-bezier(0,0,.2,1) infinite;
+}
+@keyframes ping { 75%, 100% { transform: scale(2.6); opacity: 0; } }
+
+
+/* --------------------------------------------------------------------------
+   8. ROWS  (projects, experience, skills, education all use this)
+   --------------------------------------------------------------------------
+   A hairline-separated list rather than a grid of boxes. Hovering a row
+   tints the background, colours the index number, and nudges the title.
+   Delete the .row:hover rules below for a completely static list.
+   -------------------------------------------------------------------------- */
+
+.row {
+  border-top: 1px solid var(--line);
+  padding-block: 2.25rem;
+  transition: background-color .35s var(--ease);
+  position: relative;
+}
+.row:last-child { border-bottom: 1px solid var(--line); }
+
+.row::before {
+  content: ""; position: absolute;
+  inset: 0 -1.5rem;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+  opacity: 0; transition: opacity .35s var(--ease);
+  pointer-events: none; border-radius: var(--radius);
+}
+.row:hover::before { opacity: 1; }
+
+.row-num {
+  font-family: var(--font-mono);
+  font-size: .8125rem; color: var(--muted);
+  transition: color .3s;
+}
+.row:hover .row-num { color: var(--accent); }
+
+.row-title {
+  display: inline-flex; align-items: center; gap: .5rem;
+  transition: transform .35s var(--ease);
+}
+.row:hover .row-title { transform: translateX(4px); }
+
+.row-title svg {
+  opacity: 0; transform: translateX(-6px);
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
+  color: var(--accent);
+}
+.row:hover .row-title svg { opacity: 1; transform: none; }
+
+
+/* --------------------------------------------------------------------------
+   9. SCROLL REVEAL
+   --------------------------------------------------------------------------
+   Anything marked  data-reveal  fades up as it scrolls into view.
+   Remove the attribute from an element to make it appear instantly.
+   -------------------------------------------------------------------------- */
+
+/* Cap paragraph width in CHARACTERS, not pixels. Past roughly 70 characters
+   the eye loses its place coming back to the start of the next line. This is
+   the reason a site cannot simply stretch to fill any width: the container can
+   grow, but a block of prose should not grow with it.
+
+   Newspapers use columns for exactly this reason. */
+.row .body, .row ul { max-width: 62ch; }
+.lede { max-width: 34ch; }
+
+
+[data-reveal] {
+  opacity: 0; transform: translateY(14px);
+  transition: opacity .6s var(--ease), transform .6s var(--ease);
+}
+[data-reveal].is-visible { opacity: 1; transform: none; }
+
+/* A shorter row, used by the Skills list. */
+.row-tight { padding-block: 1.5rem; }
+
+/* --------------------------------------------------------------------------
+   SHOW/HIDE BY SCREEN SIZE
+   --------------------------------------------------------------------------
+   768px is the breakpoint between "phone/tablet" and "laptop". Below it the
+   nav collapses to a hamburger; above it the links show inline.
+
+   These are plain CSS rather than Tailwind's md:hidden because a rule in this
+   file that sets `display` will beat a Tailwind utility, and the hamburger
+   ended up visible on desktop as a result.
+   -------------------------------------------------------------------------- */
+
+.only-desktop { display: none; }
+.only-mobile  { display: flex; }
+
+@media (min-width: 768px) {
+  .only-desktop { display: flex; }
+  .only-mobile  { display: none; }
+}
+
+/* Mobile dropdown panel. JS toggles .is-closed. */
+#mobile-menu {
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  flex-direction: column;
+}
+#mobile-menu.is-closed { display: none; }

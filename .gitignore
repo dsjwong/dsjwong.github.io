@@ -1,0 +1,8 @@
+# Local working notes — deliberately not published
+CONTENT.md
+NOTES.local.md
+
+# Scratch renders used while testing the layout
+_*.html
+
+.DS_Store
