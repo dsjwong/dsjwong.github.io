@@ -38,7 +38,7 @@
   --surface: #FFFFFF;   /* raised things: the hero side panel                */
   --ink:     #17171A;   /* headings and strong text                          */
   --body:    #4A4A50;   /* paragraphs                                        */
-  --muted:   #8A8A90;   /* labels, dates, metadata                           */
+  --muted:   #6F6F76;   /* labels, dates, metadata - WCAG AA on --paper      */
   --line:    #E4E1DA;   /* hairline rules and borders                        */
   --accent:  #9A3412;   /* rust                                              */
   --accent-2:#7C2D12;   /* darker rust, for hover                            */
@@ -57,7 +57,7 @@
   --surface: #1A1917;
   --ink:     #F2F0EB;
   --body:    #ACA79E;
-  --muted:   #78736B;
+  --muted:   #8B857C;
   --line:    #2B2825;
   --accent:  #E8845C;
   --accent-2:#F2A183;
@@ -222,12 +222,6 @@ body {
   line-height: .95;
 }
 
-.h2 {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1.05; letter-spacing: -.02em;
-  color: var(--ink);
-}
 
 .h3 {
   font-size: 1.1875rem; font-weight: 600; letter-spacing: -.01em;
@@ -443,3 +437,45 @@ body {
   flex-direction: column;
 }
 #mobile-menu.is-closed { display: none; }
+
+
+/* --------------------------------------------------------------------------
+   PRINT
+   --------------------------------------------------------------------------
+   Someone will save this page as a PDF or print it — recruiters do. Without
+   these rules they would get the dark theme's ink-heavy background, a nav bar
+   floating over the text, and links whose destinations are invisible on paper.
+   -------------------------------------------------------------------------- */
+
+@media print {
+  /* Always print on white, whatever theme was on screen. */
+  :root, .dark {
+    --paper: #fff; --surface: #fff; --ink: #000; --body: #222;
+    --muted: #555; --line: #ccc; --accent: #000; --accent-2: #000;
+  }
+
+  #nav, #mobile-menu, #theme-toggle, #menu-toggle, #copy-email,
+  .skip-link, footer a { display: none !important; }
+
+  /* Nothing hidden, nothing animated, nothing stuck to a viewport that
+     does not exist on paper. */
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  .lg\:sticky   { position: static !important; }
+  #home         { min-height: 0 !important; padding-block: 0 2rem !important; }
+  .section      { padding-block: 1.5rem !important; break-inside: avoid; }
+  .row          { break-inside: avoid; }
+  .row::before  { display: none; }
+
+  /* Print the destination of every external link after its text, so the page
+     is still useful once it is on paper. */
+  a[href^="http"]::after,
+  a[href^="mailto"]::after {
+    content: " (" attr(href) ")";
+    font-family: var(--font-mono);
+    font-size: .7em;
+    color: #555;
+    word-break: break-all;
+  }
+
+  body { font-size: 11pt; }
+}

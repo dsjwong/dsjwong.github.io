@@ -36,12 +36,30 @@
   var menuBtn = document.getElementById('menu-toggle');
   var menu    = document.getElementById('mobile-menu');
   if (menuBtn && menu) {
+    var setMenu = function (open) {
+      menu.classList.toggle('is-closed', !open);
+      // Tells assistive technology whether the menu is open. Without this the
+      // button is announced identically in both states.
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    };
+
     menuBtn.addEventListener('click', function () {
-      menu.classList.toggle('is-closed');
+      setMenu(menu.classList.contains('is-closed'));
     });
+
     // Close it again after tapping a link.
     menu.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () { menu.classList.add('is-closed'); });
+      a.addEventListener('click', function () { setMenu(false); });
+    });
+
+    // Escape closes it and returns focus to the button, which is what a
+    // keyboard user expects from any dismissible thing.
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !menu.classList.contains('is-closed')) {
+        setMenu(false);
+        menuBtn.focus();
+      }
     });
   }
 
