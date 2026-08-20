@@ -44,6 +44,7 @@
   --accent-2:#7C2D12;   /* darker rust, for hover                            */
 
   --radius: 10px;
+  --radius-sm: .5rem;   /* buttons, tags */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 
   --font-display: "Instrument Serif", ui-serif, Georgia, serif;
@@ -167,6 +168,26 @@ body {
   font-size: 1.5rem; color: var(--ink); letter-spacing: -.01em;
 }
 .nav-mark span { color: var(--accent); }
+
+/* The section you are currently reading. js/main.js sets aria-current as you
+   scroll; using the ARIA attribute rather than a class means screen readers
+   are told the same thing sighted users are shown. */
+.nav-link[aria-current="true"] { color: var(--ink); }
+.nav-link[aria-current="true"]::after { transform: scaleX(1); }
+
+/* Copy-to-clipboard button beside the email address in the contact section. */
+.copy-btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .5rem .875rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  color: var(--muted);
+  transition: color .2s, border-color .2s;
+}
+.copy-btn:hover      { color: var(--ink);    border-color: var(--accent); }
+.copy-btn.is-copied  { color: var(--accent); border-color: var(--accent); }
 
 #nav.is-scrolled {
   background: color-mix(in srgb, var(--paper) 85%, transparent);

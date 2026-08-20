@@ -1,27 +1,45 @@
 <!DOCTYPE html>
-<!-- GitHub Pages serves this for any URL that does not exist. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Not found — Darren Wong</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Instrument+Serif&display=swap" rel="stylesheet">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/img/favicon.png" type="image/png">
+<meta name="theme-color" content="#FBFAF8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121110" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Instrument+Serif&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
-  body{margin:0;min-height:100vh;display:grid;place-items:center;text-align:center;
-       font-family:Inter,system-ui,sans-serif;background:#fff;color:#475569;padding:2rem}
-  h1{font-family:"Instrument Serif",serif;font-size:5rem;margin:0 0 .5rem;color:#0f172a;line-height:1}
-  a{color:#4f46e5;text-decoration:none;font-weight:500}
-  a:hover{text-decoration:underline}
-  @media (prefers-color-scheme:dark){
-    body{background:#020617;color:#94a3b8} h1{color:#fff} a{color:#818cf8}
+  /* Same palette as css/styles.css — keep these in step if you change it. */
+  :root { --paper:#FBFAF8; --ink:#17171A; --body:#4A4A50; --muted:#8A8A90; --accent:#9A3412; }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#121110; --ink:#F2F0EB; --body:#ACA79E; --muted:#78736B; --accent:#E8845C; }
   }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    min-height:100vh; display:grid; place-items:center; padding:2rem;
+    background:var(--paper); color:var(--body);
+    font-family:Inter, system-ui, sans-serif; -webkit-font-smoothing:antialiased;
+  }
+  .code { font-family:"JetBrains Mono",monospace; font-size:.6875rem; letter-spacing:.14em;
+          text-transform:uppercase; color:var(--accent); margin-bottom:1rem; }
+  h1 { font-family:"Instrument Serif",serif; font-size:clamp(3.5rem,12vw,7rem); line-height:1;
+       color:var(--ink); letter-spacing:-.02em; font-weight:400; margin-bottom:1rem; }
+  p { font-size:1.0625rem; line-height:1.7; margin-bottom:2rem; }
+  a { color:var(--ink); text-decoration:none; font-weight:500;
+      border-bottom:1px solid var(--accent); padding-bottom:2px; transition:color .2s; }
+  a:hover { color:var(--accent); }
+  .wrap { max-width:32rem; }
 </style>
 </head>
 <body>
-  <div>
-    <h1>404</h1>
-    <p>That page does not exist.</p>
-    <p><a href="/">Back to darrenwongsj.dev</a></p>
+  <div class="wrap">
+    <p class="code">Error 404</p>
+    <h1>Not found</h1>
+    <p>That page does not exist — most likely a mistyped address or a link that has moved.</p>
+    <a href="/">Back to darrenwongsj.dev</a>
   </div>
 </body>
 </html>

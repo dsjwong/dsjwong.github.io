@@ -14,12 +14,10 @@
   'use strict';
 
   /* 1 ── Icons ───────────────────────────────────────────────────────────── */
-  // Lucide replaces every <i data-lucide="name"> with an inline SVG.
-  // Icon names: https://lucide.dev/icons
-  function drawIcons() {
-    if (window.lucide) window.lucide.createIcons();
-  }
-  drawIcons();
+  // Icons are inline <svg> in index.html — no library, nothing to draw, and
+  // they are painted with the first frame instead of appearing after JS runs.
+  // To add one: copy the paths from https://lucide.dev/icons into an <svg>
+  // matching the ones already in the markup.
 
 
   /* 2 ── Light / dark toggle ─────────────────────────────────────────────── */
@@ -30,7 +28,6 @@
     toggle.addEventListener('click', function () {
       var dark = document.documentElement.classList.toggle('dark');
       localStorage.setItem('theme', dark ? 'dark' : 'light');
-      drawIcons();  // re-render so the sun/moon swap takes effect
     });
   }
 
@@ -86,5 +83,50 @@
   /* 6 ── Footer year ─────────────────────────────────────────────────────── */
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
+
+
+  /* 7 ── Highlight the section you are currently reading ─────────────────── */
+  // Watches a band across the middle of the screen. Whichever section is in
+  // that band gets aria-current="true" on its nav link, which css/styles.css
+  // styles. aria-current is used rather than a class so screen readers are
+  // told the same thing sighted users are shown.
+  var navLinks = document.querySelectorAll('[data-nav]');
+  var watched  = document.querySelectorAll('section[id]');
+
+  if (navLinks.length && watched.length && 'IntersectionObserver' in window) {
+    var current = null;
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        if (current === e.target.id) return;
+        current = e.target.id;
+        navLinks.forEach(function (a) {
+          a.setAttribute('aria-current', a.dataset.nav === current ? 'true' : 'false');
+        });
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });   // a thin band across the middle
+
+    watched.forEach(function (s) { spy.observe(s); });
+  }
+
+
+  /* 8 ── Copy email to clipboard ─────────────────────────────────────────── */
+  var copyBtn = document.getElementById('copy-email');
+  if (copyBtn && navigator.clipboard) {
+    var label = copyBtn.querySelector('span');
+    var idle  = label.textContent;
+    copyBtn.addEventListener('click', function () {
+      navigator.clipboard.writeText(copyBtn.dataset.email).then(function () {
+        label.textContent = 'Copied';
+        copyBtn.classList.add('is-copied');
+        setTimeout(function () {
+          label.textContent = idle;
+          copyBtn.classList.remove('is-copied');
+        }, 1800);
+      });
+    });
+  } else if (copyBtn) {
+    copyBtn.remove();   // no clipboard API: hide the button rather than show a dead one
+  }
 
 })();

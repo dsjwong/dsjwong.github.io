@@ -34,23 +34,62 @@
 <meta property="og:url" content="https://darrenwongsj.dev/">
 <meta property="og:title" content="Darren Wong — Software Engineer">
 <meta property="og:description" content="CS and AI student at HKUST. Full-stack, machine learning and computer vision.">
-<!-- Add a 1200x630 image at assets/img/og-cover.png, then uncomment these two
-     lines, so a pasted link previews with a picture instead of plain text.
 <meta property="og:image" content="https://darrenwongsj.dev/assets/img/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Darren Wong — Software Engineer, Hong Kong">
 <meta name="twitter:card" content="summary_large_image">
--->
 
-<!-- Add a square image at assets/img/favicon.png, then uncomment this line.
 <link rel="icon" href="assets/img/favicon.png" type="image/png">
--->
+<link rel="apple-touch-icon" href="assets/img/favicon.png">
+
+<!-- Tints the browser chrome on mobile to match the page. -->
+<meta name="theme-color" content="#FBFAF8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121110" media="(prefers-color-scheme: dark)">
+
+<!-- Structured data. This is what lets a search engine understand that this
+     page is about a PERSON — name, employer, education, accounts — rather
+     than guessing from the text. It is why searching your name can show a
+     proper result instead of a bare blue link.
+     Validate changes at https://validator.schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Darren Wong Shih Jie",
+  "alternateName": "Darren Wong",
+  "url": "https://darrenwongsj.dev",
+  "image": "https://darrenwongsj.dev/assets/img/og-cover.png",
+  "email": "mailto:darrenwongsj@gmail.com",
+  "jobTitle": "Software Engineer",
+  "description": "Computer Science and Artificial Intelligence student at HKUST, building full-stack web applications and machine-learning systems.",
+  "address": { "@type": "PostalAddress", "addressLocality": "Hong Kong" },
+  "worksFor": { "@type": "Organization", "name": "CarryAI Company Limited" },
+  "alumniOf": [
+    { "@type": "CollegeOrUniversity", "name": "The Hong Kong University of Science and Technology" },
+    { "@type": "CollegeOrUniversity", "name": "University of New South Wales" }
+  ],
+  "knowsAbout": [
+    "Software Engineering", "Full-stack Development", "Machine Learning",
+    "Computer Vision", "Java", "Spring Boot", "Python", "PyTorch", "React"
+  ],
+  "sameAs": [
+    "https://github.com/dsjwong",
+    "https://www.linkedin.com/in/dwsj"
+  ]
+}
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-<!-- Tailwind handles layout only. All colour and type lives in css/styles.css -->
-<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-<link rel="stylesheet" href="css/styles.css?v=7">
+<!-- Two stylesheets, no JavaScript libraries.
+       layout.css  grid, spacing, breakpoints  (the Tailwind class names, precompiled)
+       styles.css  colour, type, components     (the design system)
+     Bump the ?v= number after a big CSS change so browsers refetch. -->
+<link rel="stylesheet" href="css/layout.css?v=1">
+<link rel="stylesheet" href="css/styles.css?v=9">
 <noscript><style>[data-reveal]{opacity:1!important;transform:none!important}</style></noscript>
 
 <!-- Applies your saved theme before first paint so there is no flash. -->
@@ -75,27 +114,27 @@ document.documentElement.classList.add('dark');})();
 
     <div class="flex items-center gap-4">
       <div class="only-desktop items-center gap-5">
-        <a href="#work"       class="nav-link">Work</a>
-        <a href="#experience" class="nav-link">Experience</a>
-        <a href="#skills"     class="nav-link">Skills</a>
-        <a href="#contact"    class="nav-link">Contact</a>
+        <a href="#work"       class="nav-link" data-nav="work">Work</a>
+        <a href="#experience" class="nav-link" data-nav="experience">Experience</a>
+        <a href="#skills"     class="nav-link" data-nav="skills">Skills</a>
+        <a href="#contact"    class="nav-link" data-nav="contact">Contact</a>
       </div>
       <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode">
-        <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
-        <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
+        <svg class="w-4 h-4 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        <svg class="w-4 h-4 block dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
       </button>
       <button id="menu-toggle" class="icon-btn only-mobile" aria-label="Open menu">
-        <i data-lucide="menu" class="w-4 h-4"></i>
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
       </button>
     </div>
   </nav>
 
   <div id="mobile-menu" class="only-mobile is-closed">
     <div class="wrap py-5 flex flex-col gap-3">
-      <a href="#work"       class="nav-link">Work</a>
-      <a href="#experience" class="nav-link">Experience</a>
-      <a href="#skills"     class="nav-link">Skills</a>
-      <a href="#contact"    class="nav-link">Contact</a>
+      <a href="#work"       class="nav-link" data-nav="work">Work</a>
+      <a href="#experience" class="nav-link" data-nav="experience">Experience</a>
+      <a href="#skills"     class="nav-link" data-nav="skills">Skills</a>
+      <a href="#contact"    class="nav-link" data-nav="contact">Contact</a>
     </div>
   </div>
 </header>
@@ -131,10 +170,10 @@ document.documentElement.classList.add('dark');})();
 
       <div data-reveal class="flex flex-wrap gap-3">
         <a href="#work" class="btn btn-solid">
-          Selected work <i data-lucide="arrow-down" class="w-4 h-4"></i>
+          Selected work <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
         </a>
         <a href="assets/resume.pdf" class="btn btn-line">
-          <i data-lucide="file-text" class="w-4 h-4"></i> Résumé
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg> Résumé
         </a>
       </div>
     </div>
@@ -265,7 +304,7 @@ document.documentElement.classList.add('dark');})();
         <div class="lg:col-span-7">
           <a href="https://github.com/dsjwong/library-management-system" class="row-title">
             <h3 class="h3">Library Management System</h3>
-            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
           </a>
           <p class="body mt-3">
             Catalogue, borrowing and returns, reservations, fines, and role-based access for
@@ -309,7 +348,7 @@ document.documentElement.classList.add('dark');})();
         <div class="lg:col-span-7">
           <a href="https://github.com/dsjwong/cv-crop-pest-object-detection-benchmarking" class="row-title">
             <h3 class="h3">Crop Pest Detection Benchmark</h3>
-            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
           </a>
           <p class="body mt-3">
             Six deep-learning architectures — three detectors and three classifiers — trained
@@ -391,7 +430,7 @@ document.documentElement.classList.add('dark');})();
         <div class="lg:col-span-7">
           <a href="https://github.com/dsjwong/ai-safe-reinforcement-learning-shield" class="row-title">
             <h3 class="h3">Safe Reinforcement Learning with Runtime Shielding</h3>
-            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
           </a>
           <p class="body mt-3">
             A Q-learning agent wrapped in a learned safety shield that vets each proposed
@@ -423,7 +462,7 @@ document.documentElement.classList.add('dark');})();
         <div class="lg:col-span-7">
           <a href="https://github.com/dsjwong/REPO" class="row-title">
             <h3 class="h3">Project name</h3>
-            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
           </a>
           <p class="body mt-3">
             What it does, who it is for, and the one genuinely hard part.
@@ -715,14 +754,22 @@ document.documentElement.classList.add('dark');})();
     <div class="lg:col-span-10">
       <!-- EDIT: say what you actually want to hear about. -->
       <p data-reveal class="lede max-w-xl mb-10">
-        I am looking for software engineering internships for Summer 2027, and I am always
-        glad to talk about backend systems, computer vision, or anything aviation-adjacent.
+        I am looking for software engineering internships and graduate roles for 2027, and I
+        am always glad to talk about backend systems, computer vision, or anything
+        aviation-adjacent.
       </p>
 
-      <a data-reveal href="mailto:darrenwongsj@gmail.com" class="link-xl">
-        darrenwongsj@gmail.com
-        <i data-lucide="arrow-up-right" class="w-8 h-8"></i>
-      </a>
+      <div data-reveal class="flex flex-wrap items-center gap-4">
+        <a href="mailto:darrenwongsj@gmail.com" class="link-xl">
+          darrenwongsj@gmail.com
+          <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+        </a>
+        <button id="copy-email" class="copy-btn" data-email="darrenwongsj@gmail.com"
+                aria-label="Copy email address to clipboard">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <span>Copy</span>
+        </button>
+      </div>
 
       <div data-reveal class="flex flex-wrap gap-6 mt-12">
         <a href="https://github.com/dsjwong" class="link meta">GitHub</a>
@@ -744,7 +791,6 @@ document.documentElement.classList.add('dark');})();
   </div>
 </footer>
 
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,190 @@
+/* ==========================================================================
+   layout.css  —  the layout utilities this page uses
+   ==========================================================================
+
+   These are the exact class names Tailwind provides, with the exact values
+   Tailwind gives them — just written out as plain CSS and served as a 2 KB
+   file, instead of shipping a 71 KB library that generates them in the
+   visitor's browser on every page load.
+
+   The markup in index.html is unchanged: `grid`, `lg:col-span-7`, `mt-3` all
+   still mean what they mean in any Tailwind documentation you read.
+
+   THE ONE THING TO KNOW: only the classes listed here exist. If you add a
+   class to index.html that is not in this file, nothing will happen. Adding
+   it is one line — the scale is 1 unit = 0.25rem, so `mt-6` is
+   `.mt-6 { margin-top: 1.5rem; }`.
+
+   Breakpoints:  sm = 640px,  lg = 1024px
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   0. RESET
+   --------------------------------------------------------------------------
+   Browsers ship their own opinions: links are blue and underlined, headings
+   have margins, lists have bullets and indentation. Every CSS framework
+   starts by clearing them so you are styling from a known state rather than
+   fighting defaults that differ between browsers.
+
+   This is Tailwind's "Preflight", reduced to the rules this page relies on.
+   -------------------------------------------------------------------------- */
+
+*, ::before, ::after { box-sizing: border-box; border: 0 solid; }
+* { margin: 0; padding: 0; }
+
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+}
+
+/* Headings inherit size and weight; the .h2 / .h3 classes set them instead.
+   This stops an <h3> looking different depending on where it sits. */
+h1, h2, h3, h4, h5, h6 { font-size: inherit; font-weight: inherit; }
+
+/* Links take their colour from context and are NOT underlined by default —
+   the .link class draws its own underline on hover instead. */
+a { color: inherit; text-decoration: inherit; }
+
+b, strong { font-weight: bolder; }
+
+ol, ul { list-style: none; }
+
+button, input, select, textarea {
+  font: inherit; color: inherit; background: transparent;
+}
+button { cursor: pointer; }
+
+img, svg, video, canvas { display: block; vertical-align: middle; }
+img, video { max-width: 100%; height: auto; }
+
+
+/* -- display ------------------------------------------------------------- */
+.block   { display: block; }
+.flex    { display: flex; }
+.grid    { display: grid; }
+.hidden  { display: none; }
+
+.dark .dark\:block  { display: block; }
+.dark .dark\:hidden { display: none; }
+
+
+/* -- position ------------------------------------------------------------ */
+.fixed      { position: fixed; }
+.top-0      { top: 0; }
+.inset-x-0  { left: 0; right: 0; }
+.z-50       { z-index: 50; }
+
+
+/* -- flexbox and alignment ----------------------------------------------- */
+.flex-col        { flex-direction: column; }
+.flex-wrap       { flex-wrap: wrap; }
+.items-start     { align-items: flex-start; }
+.items-center    { align-items: center; }
+.items-baseline  { align-items: baseline; }
+.justify-between { justify-content: space-between; }
+
+
+/* -- gap ----------------------------------------------------------------- */
+.gap-1\.5 { gap: .375rem; }
+.gap-2    { gap: .5rem; }
+.gap-2\.5 { gap: .625rem; }
+.gap-3    { gap: .75rem; }
+.gap-4    { gap: 1rem; }
+.gap-5    { gap: 1.25rem; }
+.gap-6    { gap: 1.5rem; }
+.gap-10   { gap: 2.5rem; }
+
+.gap-x-8  { column-gap: 2rem; }
+.gap-x-10 { column-gap: 2.5rem; }
+
+.gap-y-2  { row-gap: .5rem; }
+.gap-y-3  { row-gap: .75rem; }
+.gap-y-4  { row-gap: 1rem; }
+.gap-y-6  { row-gap: 1.5rem; }
+.gap-y-8  { row-gap: 2rem; }
+.gap-y-12 { row-gap: 3rem; }
+
+
+/* -- sizing -------------------------------------------------------------- */
+.w-4    { width: 1rem; }
+.w-8    { width: 2rem; }
+.w-full { width: 100%; }
+.h-4    { height: 1rem; }
+.h-8    { height: 2rem; }
+.h-16   { height: 4rem; }
+
+.max-w-xl  { max-width: 36rem; }
+.max-w-2xl { max-width: 42rem; }
+
+/* svh = "small viewport height": on a phone this excludes the address bar,
+   where plain vh does not and causes the hero to overflow. */
+.min-h-\[88svh\] { min-height: 88svh; }
+
+
+/* -- margin -------------------------------------------------------------- */
+.mt-1  { margin-top: .25rem; }
+.mt-2  { margin-top: .5rem; }
+.mt-3  { margin-top: .75rem; }
+.mt-4  { margin-top: 1rem; }
+.mt-5  { margin-top: 1.25rem; }
+.mt-10 { margin-top: 2.5rem; }
+.mt-12 { margin-top: 3rem; }
+
+.mb-1\.5 { margin-bottom: .375rem; }
+.mb-2\.5 { margin-bottom: .625rem; }
+.mb-4    { margin-bottom: 1rem; }
+.mb-8    { margin-bottom: 2rem; }
+.mb-10   { margin-bottom: 2.5rem; }
+
+/* space-y-N puts the gap BETWEEN children, not around them. */
+.space-y-2 > * + * { margin-top: .5rem; }
+.space-y-6 > * + * { margin-top: 1.5rem; }
+
+
+/* -- padding ------------------------------------------------------------- */
+.pt-28 { padding-top: 7rem; }
+.pb-20 { padding-bottom: 5rem; }
+.py-5  { padding-block: 1.25rem; }
+.pl-5  { padding-left: 1.25rem; }
+
+
+/* -- type and lists ------------------------------------------------------ */
+.text-sm   { font-size: .875rem; line-height: 1.25rem; }
+.list-disc { list-style-type: disc; }
+
+
+/* -- transition ---------------------------------------------------------- */
+.transition-all { transition-property: all; transition-timing-function: cubic-bezier(.4,0,.2,1); }
+.duration-300   { transition-duration: 300ms; }
+
+
+/* -- responsive: sm (640px and up) --------------------------------------- */
+@media (min-width: 640px) {
+  .sm\:flex-row     { flex-direction: row; }
+  .sm\:items-center { align-items: center; }
+}
+
+
+/* -- responsive: lg (1024px and up) --------------------------------------
+   This is where the page becomes a 12-column grid. Below it every child is
+   a normal block and stacks vertically, which is the entire mobile layout.
+
+   Spans within one grid must add up to 12. If they sum to 13 the last item
+   wraps onto its own line.
+   ------------------------------------------------------------------------ */
+@media (min-width: 1024px) {
+  .lg\:grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+
+  .lg\:col-span-1  { grid-column: span 1  / span 1;  }
+  .lg\:col-span-2  { grid-column: span 2  / span 2;  }
+  .lg\:col-span-4  { grid-column: span 4  / span 4;  }
+  .lg\:col-span-7  { grid-column: span 7  / span 7;  }
+  .lg\:col-span-8  { grid-column: span 8  / span 8;  }
+  .lg\:col-span-10 { grid-column: span 10 / span 10; }
+
+  .lg\:justify-end { justify-content: flex-end; }
+  .lg\:sticky      { position: sticky; }
+  .lg\:top-28      { top: 7rem; }
+}

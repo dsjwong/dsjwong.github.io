@@ -1,10 +1,12 @@
 # darrenwongsj.dev
 
-Personal site. Static HTML, no build step, no `npm install`. Deployed to GitHub Pages.
+Personal site. Static HTML, no build step, no `npm install`, **no runtime dependencies**.
+Deployed to GitHub Pages. About 19 KB gzipped in total.
 
 ```
 darrenwongsj.dev/
 ├── index.html        ← 95% of your edits happen here
+├── css/layout.css    ← grid, spacing, breakpoints (Tailwind class names, precompiled)
 ├── css/styles.css    ← the palette, type, rows, buttons, animations
 ├── js/main.js        ← theme toggle, mobile menu, scroll reveal (leave alone)
 ├── 404.html
@@ -108,10 +110,20 @@ anywhere on the page works the same way.
 | Fade-in on scroll | `css/styles.css` section 9 — or remove `data-reveal` from an element |
 | Icons | any `<i data-lucide="name">`; browse names at <https://lucide.dev/icons> |
 
-The colour, spacing and layout classes in `index.html` (`text-xl`, `gap-6`,
-`md:grid-cols-2` …) are **Tailwind CSS**. Full reference: <https://tailwindcss.com/docs>.
-`md:` means "on medium screens and wider", so `md:grid-cols-2` is one column on a
-phone and two on a laptop.
+The layout classes in `index.html` (`grid`, `gap-6`, `lg:col-span-7` …) use
+**Tailwind's names and Tailwind's values**, but they are written out in
+`css/layout.css` rather than generated at runtime by the Tailwind library. Any
+Tailwind documentation still describes what they do:
+<https://tailwindcss.com/docs>. `lg:` means "on large screens and wider", so
+`lg:col-span-7` is full width on a phone and seven of twelve columns on a laptop.
+
+**The catch:** only the classes actually in `css/layout.css` exist. Adding a new
+one to the HTML does nothing until you add it to that file — which is one line,
+and the file explains the scale (1 unit = 0.25rem).
+
+The trade for that small inconvenience: the page went from **182 KB of
+libraries to 19 KB total**, renders with no flash of unstyled content, and needs
+no JavaScript for any of its content.
 
 ---
 
@@ -210,8 +222,13 @@ mobile afterwards is how sites end up with horizontal scrollbars on phones.
   text — and if that happens above `<meta charset>`, accented characters break too.
 - Tailwind handles layout only (grid, spacing, breakpoints). Every colour, font and
   border comes from `css/styles.css`, so there is one place to change the look.
-- Tailwind here is the **browser build**, compiled in the visitor's browser. It is
-  fine for a personal site. If the site ever grows past a few pages, switch to a
-  real Tailwind build for a faster first paint.
-- Everything loads from CDNs (Tailwind, Lucide, Google Fonts). No accounts, no keys,
-  nothing to configure.
+- **Icons are inline `<svg>`**, not a library. To add one, copy the paths from
+  <https://lucide.dev/icons> into an `<svg>` matching those already in the markup.
+- The only external request is **Google Fonts**. Everything else is served from
+  this repo.
+- `assets/img/favicon.png` and `assets/img/og-cover.png` were generated from HTML
+  templates rendered with headless Chrome. Regenerating them means rebuilding
+  those templates — easier to just edit the PNGs, or ask for them to be redone.
+- Structured data (`application/ld+json` in the `<head>`) tells search engines this
+  page is about a person. Keep it in step with the visible content, and validate
+  changes at <https://validator.schema.org>.
