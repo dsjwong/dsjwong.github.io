@@ -118,6 +118,24 @@ addEventListener('load', async () => {
   info('unused reset/state selectors (expected)', unused.length - realDead.length);
   ok('no dead component CSS', realDead.length === 0, realDead.join(' | '));
 
+  // The opposite and more damaging direction: a class in the markup that no
+  // stylesheet defines does nothing at all, silently. This is the single
+  // easiest mistake to make when editing index.html.
+  const defined = new Set();
+  for (const sh of document.styleSheets) {
+    let rules; try { rules = sh.cssRules } catch (e) { continue }
+    const collect = rl => {
+      if (rl.cssRules && rl.cssRules.length) { [...rl.cssRules].forEach(collect); return; }
+      if (!rl.selectorText) return;
+      (rl.selectorText.match(/\.((?:[a-zA-Z0-9_-]|\\.)+)/g) || [])
+        .forEach(c => defined.add(c.slice(1).replace(/\\/g, '')));
+    };
+    [...rules].forEach(collect);
+  }
+  const undef = [...new Set([...document.querySelectorAll('[class]')]
+    .flatMap(e => [...e.classList]))].filter(c => !defined.has(c));
+  ok('every class in the markup is defined in a stylesheet', undef.length === 0, undef.join(' | '));
+
   /* accessibility ------------------------------------------------------- */
   const hs = [...document.querySelectorAll('h1,h2,h3,h4,h5,h6')].map(h => +h.tagName[1]);
   let skip = null;
@@ -131,8 +149,10 @@ addEventListener('load', async () => {
   ok('skip link is the first focusable element',
      document.querySelector('a[href],button').classList.contains('skip-link'));
 
+  // an <img alt> inside a link supplies its accessible name too
   const nameless = [...document.querySelectorAll('button,a')].filter(e =>
-    !e.textContent.trim() && !e.getAttribute('aria-label') && !e.querySelector('[aria-label]'));
+    !e.textContent.trim() && !e.getAttribute('aria-label') && !e.querySelector('[aria-label]')
+    && ![...e.querySelectorAll('img')].some(i => i.alt && i.alt.trim()));
   ok('every link and button has an accessible name', nameless.length === 0,
      nameless.map(e => e.tagName + '.' + e.className).join(','));
   ok('every image has alt text', [...document.querySelectorAll('img')].every(i => i.alt !== null && i.alt !== undefined));

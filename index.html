@@ -90,8 +90,8 @@
        layout.css  grid, spacing, breakpoints  (the Tailwind class names, precompiled)
        styles.css  colour, type, components     (the design system)
      Bump the ?v= number after a big CSS change so browsers refetch. -->
-<link rel="stylesheet" href="css/layout.css?v=1">
-<link rel="stylesheet" href="css/styles.css?v=13">
+<link rel="stylesheet" href="css/layout.css?v=3">
+<link rel="stylesheet" href="css/styles.css?v=14">
 <noscript><style>[data-reveal]{opacity:1!important;transform:none!important}</style></noscript>
 
 <!-- Applies your saved theme before first paint so there is no flash. -->
@@ -335,6 +335,23 @@ document.documentElement.classList.add('dark');})();
             <p class="metric-label">YOLOv11 mAP@0.5</p>
           </div>
         </div>
+
+        <!-- A real result from the repo, not decoration. loading="lazy" means it
+             is only fetched when the reader scrolls near it, so it costs nothing
+             on first paint. To add a figure to another project, copy this block. -->
+        <figure class="lg:col-span-11 lg:col-start-2 mt-2">
+          <a href="assets/img/pest-confusion-matrix.png"
+             aria-label="Open the confusion matrix at full size">
+            <img src="assets/img/pest-confusion-matrix.png" loading="lazy" decoding="async"
+                 width="1100" height="825" class="figure-img"
+                 alt="Normalised confusion matrix for the YOLOv11 detector across twelve pest classes. Moths 0.98, Snails 0.95, Weevils 0.95, Wasps 0.89, Bees 0.85, down to Caterpillars 0.48 and Earthworms 0.47.">
+          </a>
+          <figcaption class="meta mt-3">
+            YOLOv11 normalised confusion matrix. Moths, snails and weevils resolve cleanly;
+            caterpillars and earthworms are the hard classes, and most of their error is
+            confusion with background rather than with each other.
+          </figcaption>
+        </figure>
       </article>
 
 

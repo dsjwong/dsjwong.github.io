@@ -439,6 +439,17 @@ body {
 .row:hover .row-title svg { opacity: 1; transform: none; }
 
 
+/* Figures inside a project row. */
+.figure-img {
+  width: 100%; height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;               /* the matrix is drawn on white */
+  transition: border-color .3s var(--ease);
+}
+.row:hover .figure-img { border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); }
+
+
 /* --------------------------------------------------------------------------
    9. SCROLL REVEAL
    --------------------------------------------------------------------------

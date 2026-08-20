@@ -183,6 +183,9 @@ img, video { max-width: 100%; height: auto; }
   .lg\:col-span-7  { grid-column: span 7  / span 7;  }
   .lg\:col-span-8  { grid-column: span 8  / span 8;  }
   .lg\:col-span-10 { grid-column: span 10 / span 10; }
+  .lg\:col-span-11 { grid-column: span 11 / span 11; }
+
+  .lg\:col-start-2 { grid-column-start: 2; }
 
   .lg\:justify-end { justify-content: flex-end; }
   .lg\:sticky      { position: sticky; }
