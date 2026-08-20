@@ -165,6 +165,31 @@ After every push, GitHub Pages takes ~30 seconds to rebuild. Hard-refresh
 
 ---
 
+## Testing
+
+```bash
+./test/run.sh            # 1440, 800 and 500 px
+./test/run.sh 1440       # one width
+```
+
+Drives the real page in headless Chrome and asserts 46 things: every anchor and
+asset resolves, no duplicate ids, the theme toggle flips and persists, the
+mobile menu opens/closes/responds to Escape and reports `aria-expanded`, the
+copy button is wired, nothing overflows horizontally, no dead component CSS,
+heading levels never skip, every link and button has an accessible name, and
+the small-text colours meet WCAG AA contrast.
+
+Run it after any edit. It catches the two mistakes that are easiest to make
+here: adding a class that does not exist in `layout.css`, and column spans in
+one grid that do not add up to 12.
+
+**One known-flaky assertion:** `scroll spy marks the current section`.
+IntersectionObserver does not reliably re-evaluate after a programmatic scroll
+in headless Chrome, which has no compositor. The feature works — confirm by
+scrolling in a real browser and watching the nav underline follow you.
+
+---
+
 ## How the responsive layout works
 
 There are only four mechanisms, and every professional site uses the same ones.
