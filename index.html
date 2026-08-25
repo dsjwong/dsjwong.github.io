@@ -71,7 +71,7 @@
   ],
   "knowsAbout": [
     "Software Engineering", "Full-stack Development", "Machine Learning",
-    "Computer Vision", "Java", "Spring Boot", "Python", "PyTorch", "React"
+    "Computer Vision", "Python", "TypeScript", "PyTorch", "XGBoost", "React"
   ],
   "sameAs": [
     "https://github.com/dsjwong",
@@ -240,10 +240,10 @@ document.documentElement.classList.add('dark');})();
         <p>
           I am reading Computer Science at HKUST with an extended major in Artificial
           Intelligence. Right now I am an AI engineering intern at <strong>CarryAI</strong>,
-          building a web application that helps people write better prompts for
-          vision-language models — which in practice means a lot of thinking about retry
-          logic, fallback parsing, and what an LLM client should do when the model returns
-          something unexpected.
+          running the measured evaluation programme for a vision-language safety monitor —
+          labelling real construction CCTV frame by frame, testing which pipeline and
+          prompt designs actually move recall and false alarms, and rebuilding the
+          prompt-authoring tool around what the production logs showed users doing.
         </p>
         <p>
           Before that I spent a summer at <strong>Total Rehabilitation Management</strong>
@@ -297,10 +297,106 @@ document.documentElement.classList.add('dark');})();
     <div class="lg:col-span-10">
 
       <!-- ---------------------------------------------------------------
-           PROJECT 1 — Crop Pest Detection
+           PROJECT 1 — HKIA Flight Delay Predictor
+           Live service. The repo is public; the dashboard is static JSON +
+           React on GitHub Pages. Live numbers come from the self-grading
+           evaluation loop, read 2026-08.
            --------------------------------------------------------------- -->
       <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
         <p class="lg:col-span-1 row-num">01</p>
+
+        <div class="lg:col-span-7">
+          <a href="https://github.com/dsjwong/hkia-delay-predictor" class="row-title">
+            <h3 class="h3">HKIA Flight Delay Predictor</h3>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </a>
+          <p class="meta mt-1">Live ML service — every prediction scored against the actual departure</p>
+          <p class="body mt-3">
+            An end-to-end delay-prediction service for Hong Kong International Airport,
+            built on three public data feeds: 33 point-in-time features — rolling airline
+            and airport delay statistics, as-of METAR weather joins, typhoon signals —
+            feed XGBoost trained on a date-ordered split, reaching AUC 0.661 and a
+            16.6-minute MAE on a held-out 6,252-flight test set. A 30-minute GitHub
+            Actions cron publishes predictions and a self-grading loop scores each one
+            once the flight departs; scores export as static JSON, so the React +
+            deck.gl dashboard is served entirely from static hosting.
+          </p>
+          <p class="body mt-3">
+            <a href="https://darrenwongsj.dev/hkia-delay-predictor/" class="link">Live dashboard &rarr;</a>
+          </p>
+          <div class="flex flex-wrap gap-2 mt-5">
+            <span class="tag">Python</span>
+            <span class="tag">XGBoost</span>
+            <span class="tag">pandas</span>
+            <span class="tag">GitHub Actions</span>
+            <span class="tag">React</span>
+            <span class="tag">deck.gl</span>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 flex gap-10 lg:justify-end">
+          <div>
+            <p class="metric-value">15.8 min</p>
+            <p class="metric-label">live MAE, vs 17.6 baseline</p>
+          </div>
+          <div>
+            <p class="metric-value">3,000+</p>
+            <p class="metric-label">live predictions scored</p>
+          </div>
+        </div>
+      </article>
+
+
+      <!-- ---------------------------------------------------------------
+           PROJECT 2 — LLM Trading-Agent Backtester
+           --------------------------------------------------------------- -->
+      <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
+        <p class="lg:col-span-1 row-num">02</p>
+
+        <div class="lg:col-span-7">
+          <a href="https://github.com/dsjwong/stockagent-backtester" class="row-title">
+            <h3 class="h3">LLM Trading-Agent Backtester</h3>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </a>
+          <p class="meta mt-1">A data-contamination study — does the agent forecast, or remember?</p>
+          <p class="body mt-3">
+            A no-lookahead, event-driven backtester — decisions at close t, fills at open
+            t+1, 15 bps round-trip costs — replaying an LLM trading agent over fifteen US
+            large-caps (2019&ndash;2026) against classical strategies. The agent turns out
+            to be a high-turnover momentum chaser that trails simple equal-weight
+            rebalancing risk-adjusted (1.04 vs 1.23 Sharpe) after a 3.5 pp/yr cost drag
+            at 9.4&times; annual turnover. A controlled A/B — identical engine, prices
+            and seed, real tickers versus anonymised labels — isolates data
+            contamination: the real-name arm also cited sector vocabulary never supplied
+            in the prompt. 107 offline tests and a committed prompt cache replay every
+            number for $0.
+          </p>
+          <div class="flex flex-wrap gap-2 mt-5">
+            <span class="tag">Python</span>
+            <span class="tag">pandas</span>
+            <span class="tag">LLM APIs</span>
+            <span class="tag">pytest</span>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 flex gap-10 lg:justify-end">
+          <div>
+            <p class="metric-value">+11.9%</p>
+            <p class="metric-label">2022 return, real tickers</p>
+          </div>
+          <div>
+            <p class="metric-value">+1.6%</p>
+            <p class="metric-label">same run, anonymised</p>
+          </div>
+        </div>
+      </article>
+
+
+      <!-- ---------------------------------------------------------------
+           PROJECT 3 — Crop Pest Detection
+           --------------------------------------------------------------- -->
+      <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
+        <p class="lg:col-span-1 row-num">03</p>
 
         <div class="lg:col-span-7">
           <a href="https://github.com/dsjwong/cv-crop-pest-object-detection-benchmarking" class="row-title">
@@ -356,52 +452,12 @@ document.documentElement.classList.add('dark');})();
 
 
       <!-- ---------------------------------------------------------------
-           PROJECT 2 — StockAgent
-           The repository is PRIVATE, so this row deliberately has no link.
-           Make the repo public and this becomes an <a class="row-title">
-           like the others.
-           --------------------------------------------------------------- -->
-      <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
-        <p class="lg:col-span-1 row-num">02</p>
-
-        <div class="lg:col-span-7">
-          <div class="row-title">
-            <h3 class="h3">StockAgent</h3>
-          </div>
-          <p class="meta mt-1">Multi-agent LLM stock market simulation · private repository</p>
-          <p class="body mt-3">
-            Autonomous trading agents with portfolio state management — stocks, cash and debt
-            tracking, loan repayment with interest, and bankruptcy detection — trading against
-            an order-matching engine with buy and sell queues and session-based price updates.
-            Four LLM providers sit behind one interface, with format validation, retry
-            handling, and per-agent chat history that carries trading context across
-            simulated days.
-          </p>
-          <div class="flex flex-wrap gap-2 mt-5">
-            <span class="tag">Python</span>
-            <span class="tag">OpenAI</span>
-            <span class="tag">Gemini</span>
-            <span class="tag">Claude</span>
-            <span class="tag">Ollama</span>
-          </div>
-        </div>
-
-        <div class="lg:col-span-4 flex gap-10 lg:justify-end">
-          <div>
-            <p class="metric-value">4</p>
-            <p class="metric-label">LLM providers</p>
-          </div>
-        </div>
-      </article>
-
-
-      <!-- ---------------------------------------------------------------
-           PROJECT 3 — Library Management System
+           PROJECT 4 — Library Management System
            Stack read from backend/pom.xml and frontend/package.json.
            Test count: 98 unit (surefire) + 71 integration (failsafe) = 169.
            --------------------------------------------------------------- -->
       <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
-        <p class="lg:col-span-1 row-num">03</p>
+        <p class="lg:col-span-1 row-num">04</p>
 
         <div class="lg:col-span-7">
           <a href="https://github.com/dsjwong/library-management-system" class="row-title">
@@ -437,38 +493,6 @@ document.documentElement.classList.add('dark');})();
           <div>
             <p class="metric-value">3</p>
             <p class="metric-label">user roles</p>
-          </div>
-        </div>
-      </article>
-
-
-      <!-- ---------------------------------------------------------------
-           PROJECT 4 — Safe RL
-           --------------------------------------------------------------- -->
-      <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
-        <p class="lg:col-span-1 row-num">04</p>
-
-        <div class="lg:col-span-7">
-          <a href="https://github.com/dsjwong/ai-safe-reinforcement-learning-shield" class="row-title">
-            <h3 class="h3">Safe Reinforcement Learning with Runtime Shielding</h3>
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-          </a>
-          <p class="body mt-3">
-            A Q-learning agent wrapped in a learned safety shield that vets each proposed
-            action before it reaches the environment, so unsafe moves are filtered at runtime
-            rather than merely penalised after the fact.
-          </p>
-          <div class="flex flex-wrap gap-2 mt-5">
-            <span class="tag">Python</span>
-            <span class="tag">Keras</span>
-            <span class="tag">Q-learning</span>
-          </div>
-        </div>
-
-        <div class="lg:col-span-4 flex gap-10 lg:justify-end">
-          <div>
-            <p class="metric-value">100%</p>
-            <p class="metric-label">shield test accuracy</p>
           </div>
         </div>
       </article>
@@ -523,7 +547,7 @@ document.documentElement.classList.add('dark');})();
 
      Write each bullet as: did WHAT, using WHAT, producing WHAT RESULT.
 
-     All four entries come from your CV of 15 July 2026. Update them here when
+     Both entries come from your CV of 26 August 2026. Update them here when
      the CV changes, and keep the two in step.
      ========================================================================= -->
 <section id="experience" class="section">
@@ -541,21 +565,25 @@ document.documentElement.classList.add('dark');})();
           <h3 class="h3">AI Engineer Intern</h3>
           <p class="meta mt-1" style="color:var(--accent)">CarryAI Company Limited, Hong Kong</p>
           <ul class="body mt-4 space-y-2 list-disc pl-5">
-            <li>Built a full-stack web application that guides users through a multi-turn
-                conversation to generate optimised system and user prompts for vision-language
-                models, with REST endpoints backed by a factory-pattern LLM client abstraction,
-                exponential-backoff retries, and JSON extraction with fallback parsing.</li>
-            <li>Integrated OpenRouter&rsquo;s Qwen reasoning model with native thinking-token
-                support so the application surfaces the model&rsquo;s internal reasoning in real
-                time, and built a dual-compression image pipeline — base64 multimodal encoding,
-                MIME detection, presigned URL delivery — that cut payload sizes without visible
-                quality loss.</li>
+            <li>Ran the measured evaluation programme for the company&rsquo;s vision-language
+                safety monitor: labelled 650+ frames of real Hong Kong construction CCTV and
+                showed a detect-then-describe pipeline — YOLO person crops fed to the VLM —
+                lifts climbing-over-rail recall from <strong>4/15 to 14/14</strong> frames,
+                while menu-of-states prompt design cuts false alarms from
+                <strong>181 to 4</strong>.</li>
+            <li>Built a 232-photo IoU benchmark for a structural-steel inspection client that
+                lifted rusted-bolt detection precision from <strong>0.25 to 0.70</strong>.</li>
+            <li>Rebuilt the company&rsquo;s Prompt Helper into a client-testable product,
+                starting from 133 mined production conversations — 80% of abandonments came
+                before users answered a single question: an instant-draft interview,
+                multi-frame rule building with negative-evidence frames, auth and CI across
+                43 commits, plus a standalone demo app with 58 tests.</li>
           </ul>
           <div class="flex flex-wrap gap-2 mt-5">
             <span class="tag">Python</span>
-            <span class="tag">REST APIs</span>
-            <span class="tag">OpenRouter</span>
+            <span class="tag">YOLO</span>
             <span class="tag">VLMs</span>
+            <span class="tag">LLM evaluation</span>
           </div>
         </div>
       </article>
@@ -660,62 +688,47 @@ document.documentElement.classList.add('dark');})();
         <p class="lg:col-span-2 h3">Languages</p>
         <div class="lg:col-span-10 flex flex-wrap gap-2">
           <span class="tag">Python</span>
-          <span class="tag">Java</span>
-          <span class="tag">C++</span>
-          <span class="tag">C</span>
-          <span class="tag">C#</span>
-          <span class="tag">JavaScript</span>
           <span class="tag">TypeScript</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">C++</span>
+          <span class="tag">Java</span>
+          <span class="tag">C#</span>
+          <span class="tag">C</span>
           <span class="tag">SQL</span>
           <span class="tag">Bash</span>
         </div>
       </div>
 
       <div data-reveal class="row row-tight grid lg:grid-cols-12 gap-x-8 gap-y-3 items-baseline">
-        <p class="lg:col-span-2 h3">Web</p>
-        <div class="lg:col-span-10 flex flex-wrap gap-2">
-          <span class="tag">Spring Boot</span>
-          <span class="tag">React</span>
-          <span class="tag">Vite</span>
-          <span class="tag">REST APIs</span>
-          <span class="tag">HTML</span>
-          <span class="tag">CSS</span>
-        </div>
-      </div>
-
-      <div data-reveal class="row row-tight grid lg:grid-cols-12 gap-x-8 gap-y-3 items-baseline">
-        <p class="lg:col-span-2 h3">ML &amp; Vision</p>
+        <p class="lg:col-span-2 h3">ML &amp; Data</p>
         <div class="lg:col-span-10 flex flex-wrap gap-2">
           <span class="tag">PyTorch</span>
           <span class="tag">TensorFlow</span>
-          <span class="tag">Keras</span>
+          <span class="tag">XGBoost</span>
           <span class="tag">scikit-learn</span>
+          <span class="tag">pandas</span>
           <span class="tag">NumPy</span>
-          <span class="tag">Pandas</span>
-          <span class="tag">NLTK</span>
+          <span class="tag">SHAP</span>
+          <span class="tag">YOLO</span>
+          <span class="tag">MLX</span>
         </div>
       </div>
 
       <div data-reveal class="row row-tight grid lg:grid-cols-12 gap-x-8 gap-y-3 items-baseline">
-        <p class="lg:col-span-2 h3">Data</p>
+        <p class="lg:col-span-2 h3">Web &amp; Infra</p>
         <div class="lg:col-span-10 flex flex-wrap gap-2">
-          <span class="tag">PostgreSQL</span>
-          <span class="tag">MySQL</span>
-          <span class="tag">MariaDB</span>
-          <span class="tag">SQL Server</span>
-          <span class="tag">DBeaver</span>
-        </div>
-      </div>
-
-      <div data-reveal class="row row-tight grid lg:grid-cols-12 gap-x-8 gap-y-3 items-baseline">
-        <p class="lg:col-span-2 h3">Tooling</p>
-        <div class="lg:col-span-10 flex flex-wrap gap-2">
-          <span class="tag">Git</span>
+          <span class="tag">React</span>
+          <span class="tag">Vite</span>
+          <span class="tag">Streamlit</span>
+          <span class="tag">FastAPI</span>
+          <span class="tag">pytest</span>
+          <span class="tag">vitest</span>
           <span class="tag">Docker</span>
           <span class="tag">AWS</span>
-          <span class="tag">Postman</span>
-          <span class="tag">Swagger</span>
-          <span class="tag">Jupyter</span>
+          <span class="tag">GitHub Actions</span>
+          <span class="tag">Git</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">MongoDB</span>
         </div>
       </div>
 
@@ -753,7 +766,7 @@ document.documentElement.classList.add('dark');})();
       </div>
 
       <div data-reveal class="row row-tight grid lg:grid-cols-12 gap-x-8 gap-y-2">
-        <p class="lg:col-span-2 meta"><time datetime="2025-09">2025 Term 3</time></p>
+        <p class="lg:col-span-2 meta"><time datetime="2025-08">Aug &ndash; Dec 2025</time></p>
         <div class="lg:col-span-10">
           <h3 class="h3">University of New South Wales, Sydney</h3>
           <p class="body mt-1">Exchange semester, Computer Science</p>
