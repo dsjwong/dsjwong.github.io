@@ -300,7 +300,7 @@ document.documentElement.classList.add('dark');})();
            PROJECT 1 — HKIA Flight Delay Predictor
            Live service. The repo is public; the dashboard is static JSON +
            React on GitHub Pages. Live numbers come from the self-grading
-           evaluation loop, read 2026-08.
+           evaluation loop, read 2026-10-29.
            --------------------------------------------------------------- -->
       <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
         <p class="lg:col-span-1 row-num">01</p>
@@ -313,11 +313,11 @@ document.documentElement.classList.add('dark');})();
           <p class="meta mt-1">Live ML service — every prediction scored against the actual departure</p>
           <p class="body mt-3">
             An end-to-end delay-prediction service for Hong Kong International Airport,
-            built on three public data feeds: 33 point-in-time features — rolling airline
+            built on three public data feeds: 38 point-in-time features — rolling airline
             and airport delay statistics, as-of METAR weather joins, typhoon signals —
-            feed XGBoost trained on a date-ordered split, reaching AUC 0.661 and a
-            16.6-minute MAE on a held-out 6,252-flight test set. A 30-minute GitHub
-            Actions cron publishes predictions and a self-grading loop scores each one
+            feed XGBoost trained on a date-ordered split, reaching AUC 0.693 and a
+            15.7-minute MAE on a held-out 6,580-flight test set. A scheduled GitHub
+            Actions pipeline publishes predictions and a self-grading loop scores each one
             once the flight departs; scores export as static JSON, so the React +
             deck.gl dashboard is served entirely from static hosting.
           </p>
@@ -334,15 +334,18 @@ document.documentElement.classList.add('dark');})();
           </div>
         </div>
 
-        <div class="lg:col-span-4 flex gap-10 lg:justify-end">
-          <div>
-            <p class="metric-value">15.8 min</p>
-            <p class="metric-label">live MAE, vs 17.6 baseline</p>
+        <div class="lg:col-span-4 flex flex-col gap-3" id="hkia-live">
+          <div class="flex gap-10 lg:justify-end">
+            <div>
+              <p class="metric-value" data-hkia="auc">0.669</p>
+              <p class="metric-label">live AUC, vs <span data-hkia="base">0.620</span> airline&times;hour baseline</p>
+            </div>
+            <div>
+              <p class="metric-value" data-hkia="n">2,951</p>
+              <p class="metric-label">matured predictions, <span data-hkia="window">22&ndash;29 Oct 2026</span></p>
+            </div>
           </div>
-          <div>
-            <p class="metric-value">3,000+</p>
-            <p class="metric-label">live predictions scored</p>
-          </div>
+          <p class="metric-label hkia-note" data-hkia="note">Rolling 7-day window; snapshot 29 Oct 2026</p>
         </div>
       </article>
 
@@ -361,7 +364,7 @@ document.documentElement.classList.add('dark');})();
           <p class="meta mt-1">A data-contamination study — does the agent forecast, or remember?</p>
           <p class="body mt-3">
             A no-lookahead, event-driven backtester — decisions at close t, fills at open
-            t+1, 15 bps round-trip costs — replaying an LLM trading agent over fifteen US
+            t+1, 15 bps per side (30 bps round-trip) costs — replaying an LLM trading agent over fifteen US
             large-caps (2019&ndash;2026) against classical strategies. The agent turns out
             to be a high-turnover momentum chaser that trails simple equal-weight
             rebalancing risk-adjusted (1.04 vs 1.23 Sharpe) after a 3.5 pp/yr cost drag
@@ -833,5 +836,6 @@ document.documentElement.classList.add('dark');})();
 </footer>
 
 <script src="js/main.js"></script>
+<script src="js/hkia-live.js" defer></script>
 </body>
 </html>
