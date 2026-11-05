@@ -26,18 +26,18 @@
 
 <!-- EDIT: title and description. These two lines are your Google result and
      what shows when you paste the link into LinkedIn or WhatsApp. -->
-<title>Darren Wong — Software Engineer</title>
-<meta name="description" content="Darren Wong — Computer Science and AI student at HKUST, AI engineering intern at CarryAI. Full-stack, machine learning and computer vision projects.">
+<title>Darren Wong Shih Jie — Software Engineer, HKUST</title>
+<meta name="description" content="Darren Wong Shih Jie — Computer Science and AI student at HKUST, AI engineering intern at CarryAI in Hong Kong. Live ML projects, full-stack and computer vision.">
 <link rel="canonical" href="https://darrenwongsj.dev/">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://darrenwongsj.dev/">
-<meta property="og:title" content="Darren Wong — Software Engineer">
+<meta property="og:title" content="Darren Wong Shih Jie — Software Engineer, HKUST">
 <meta property="og:description" content="CS and AI student at HKUST. Full-stack, machine learning and computer vision.">
 <meta property="og:image" content="https://darrenwongsj.dev/assets/img/og-cover.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Darren Wong — Software Engineer, Hong Kong">
+<meta property="og:image:alt" content="Darren Wong Shih Jie — Software Engineer, Hong Kong">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="assets/img/favicon.png" type="image/png">
@@ -56,9 +56,12 @@
 {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": "https://darrenwongsj.dev/#person",
   "name": "Darren Wong Shih Jie",
-  "alternateName": "Darren Wong",
-  "url": "https://darrenwongsj.dev",
+  "alternateName": ["Darren Wong", "Darren S. J. Wong", "Wong Shih Jie"],
+  "givenName": "Darren",
+  "familyName": "Wong",
+  "url": "https://darrenwongsj.dev/",
   "image": "https://darrenwongsj.dev/assets/img/og-cover.png",
   "email": "mailto:darrenwongsj@gmail.com",
   "jobTitle": "Software Engineer",
@@ -76,6 +79,16 @@
   "sameAs": [
     "https://github.com/dsjwong",
     "https://www.linkedin.com/in/dwsj"
+  ],
+  "subjectOf": [
+    { "@type": "SoftwareApplication", "name": "HKIA Flight Delay Predictor",
+      "applicationCategory": "Machine learning web app",
+      "url": "https://darrenwongsj.dev/hkia-delay-predictor/",
+      "codeRepository": "https://github.com/dsjwong/hkia-delay-predictor",
+      "author": { "@id": "https://darrenwongsj.dev/#person" } },
+    { "@type": "SoftwareSourceCode", "name": "LLM Trading-Agent Backtester",
+      "codeRepository": "https://github.com/dsjwong/stockagent-backtester",
+      "author": { "@id": "https://darrenwongsj.dev/#person" } }
   ]
 }
 </script>
@@ -158,7 +171,7 @@ document.documentElement.classList.add('dark');})();
   <div class="wrap w-full grid lg:grid-cols-12 gap-x-10 gap-y-12 items-center">
 
     <div class="lg:col-span-8">
-      <p data-reveal class="rail-label mb-8">Software Engineer &nbsp;/&nbsp; Hong Kong</p>
+      <p data-reveal class="rail-label mb-8">Darren Wong Shih Jie &nbsp;/&nbsp; Software Engineer &nbsp;/&nbsp; Hong Kong</p>
 
       <h1 data-reveal class="display hero-name mb-8">
         Darren<br>Wong
@@ -830,7 +843,7 @@ document.documentElement.classList.add('dark');})();
 
 <footer class="section" style="padding-block:2.5rem">
   <div class="wrap flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-    <p class="meta">&copy; <span id="year">2026</span> Darren Wong</p>
+    <p class="meta">&copy; <span id="year">2026</span> Darren Wong Shih Jie</p>
     <a href="#home" class="link meta">Back to top &nbsp;&uarr;</a>
   </div>
 </footer>
