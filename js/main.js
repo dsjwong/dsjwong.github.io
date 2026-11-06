@@ -2,8 +2,7 @@
    main.js — the small amount of behaviour this site needs
 
    You should not need to change anything in here. In order, it handles:
-     1. icons          — swaps <i data-lucide="..."> for real SVGs
-     2. theme toggle   — light/dark, remembered in localStorage
+     1. theme toggle   — light/dark, remembered in localStorage
      3. mobile menu    — the hamburger dropdown
      4. nav background — frosted bar appears once you scroll
      5. scroll reveal  — fades in anything marked data-reveal
@@ -12,13 +11,6 @@
 
 (function () {
   'use strict';
-
-  /* 1 ── Icons ───────────────────────────────────────────────────────────── */
-  // Icons are inline <svg> in index.html — no library, nothing to draw, and
-  // they are painted with the first frame instead of appearing after JS runs.
-  // To add one: copy the paths from https://lucide.dev/icons into an <svg>
-  // matching the ones already in the markup.
-
 
   /* 2 ── Light / dark toggle ─────────────────────────────────────────────── */
   // The initial theme is applied by the inline script in index.html <head>

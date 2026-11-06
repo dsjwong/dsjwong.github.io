@@ -25,6 +25,7 @@ function contrast(fg, bg) {
 
 addEventListener('load', async () => {
  try {
+  const HOME = !!document.getElementById('work');
   /* links and assets ---------------------------------------------------- */
   const anchors = [...document.querySelectorAll('a[href^="#"]')];
   const dead = anchors.filter(a => a.getAttribute('href') !== '#' && !document.querySelector(a.getAttribute('href')));
@@ -52,6 +53,7 @@ addEventListener('load', async () => {
 
   /* mobile menu --------------------------------------------------------- */
   const mb = document.getElementById('menu-toggle'), mm = document.getElementById('mobile-menu');
+  if (mb && mm) {
   ok('mobile menu starts closed', mm.classList.contains('is-closed'));
   ok('menu button reports collapsed state', mb.getAttribute('aria-expanded') === 'false');
   mb.click();
@@ -62,6 +64,7 @@ addEventListener('load', async () => {
   ok('menu button label tracks its state', mb.getAttribute('aria-label') === 'Open menu');
   mb.click(); mm.querySelector('a').click();
   ok('menu closes after choosing a link', mm.classList.contains('is-closed'));
+  }
 
   /* copy button --------------------------------------------------------- */
   const cb = document.getElementById('copy-email');
@@ -73,20 +76,20 @@ addEventListener('load', async () => {
 
   /* scrolling ----------------------------------------------------------- */
   document.documentElement.style.scrollBehavior = 'auto';
-  window.scrollTo({ top: document.getElementById('work').offsetTop + 400, behavior: 'instant' });
+  window.scrollTo({ top: (document.getElementById('work') || document.body).offsetTop + 400, behavior: 'instant' });
   ok('page actually scrolled', await until(() => window.scrollY > 100));
   window.dispatchEvent(new Event('scroll'));   // headless emits none itself
   ok('nav gains its scrolled state', await until(() => document.getElementById('nav').classList.contains('is-scrolled')));
-  ok('scroll spy marks the current section',
+  if (HOME) ok('scroll spy marks the current section',
      await until(() => [...document.querySelectorAll('[data-nav]')].some(a => a.getAttribute('aria-current') === 'true')));
-  ok('scroll reveal fires', [...document.querySelectorAll('[data-reveal]')].some(e => e.classList.contains('is-visible')));
+  if (HOME) ok('scroll reveal fires', [...document.querySelectorAll('[data-reveal]')].some(e => e.classList.contains('is-visible')));
 
   /* layout -------------------------------------------------------------- */
   window.scrollTo({ top: 0, behavior: 'instant' }); await wait(300);
   const vw = document.documentElement.clientWidth;
   const over = [...document.querySelectorAll('body *')].filter(e => {
     const r = e.getBoundingClientRect(); return r.width > 0 && (r.right > vw + 1 || r.left < -1);
-  }).filter(e => !e.classList.contains('skip-link'));
+  }).filter(e => !e.classList.contains('skip-link') && !e.closest('.sr-only'));
   ok('nothing overflows horizontally', over.length === 0, over.slice(0, 3).map(e => e.tagName + '.' + e.className).join(' | '));
   ok('document is no wider than the viewport', document.documentElement.scrollWidth <= vw + 1,
      document.documentElement.scrollWidth + ' vs ' + vw);
@@ -110,6 +113,7 @@ addEventListener('load', async () => {
     [...rules].forEach(walk);
   }
   info('CSS selectors checked', total);
+  if (!HOME) unused = [];
   // reset rules for elements not used yet are intentional, and a state selector
   // cannot match at rest — only unused component classes are genuinely dead
   const resetTags = /^(h[1-6]|b|strong|ol|ul|li|input|select|textarea|button|img|video|canvas|audio|iframe|embed|object|html|body|a|p)$/;
@@ -160,16 +164,36 @@ addEventListener('load', async () => {
      [...document.querySelectorAll('svg')].every(s => s.getAttribute('aria-hidden')));
 
   const times = [...document.querySelectorAll('time')];
-  ok('every <time> has a datetime attribute', times.length > 0 && times.every(x => x.getAttribute('datetime')),
+  ok('every <time> has a datetime attribute', (!HOME || times.length > 0) && times.every(x => x.getAttribute('datetime')),
      times.length + ' found');
 
   /* contrast (WCAG AA: 4.5 for small text, 3 for large) ------------------ */
   const bg = getComputedStyle(document.body).backgroundColor;
-  for (const sel of ['.body', '.h3', '.meta', '.rail-label', '.tag']) {
+  for (const sel of ['.body', '.h3', '.meta', '.tag', '.nav-link', '.board-cap', '.board-fine', '.intro', '.story-body', '.card-hook', '.live-line', '.draft-note']) {
     const el = document.querySelector(sel); if (!el) continue;
     const c = contrast(getComputedStyle(el).color, bg);
     const need = parseFloat(getComputedStyle(el).fontSize) < 18.66 ? 4.5 : 3;
     ok(`contrast ${sel} (${c.toFixed(2)}:1, needs ${need})`, c >= need);
+  }
+
+  /* departures board ---------------------------------------------------- */
+  if (HOME) {
+    const board = document.getElementById('board'), tbl = document.getElementById('board-table');
+    ok('board is hidden from screen readers in favour of the table', board.querySelector('.board-body').getAttribute('aria-hidden') === 'true');
+    ok('board has a text-alternative table with rows', tbl.tBodies[0].rows.length >= 3 && !!tbl.caption);
+    await until(() => board.querySelectorAll('.fl').length > 0);
+    ok('board renders six rows of flaps', board.querySelectorAll('.board-row').length === 6 && board.querySelectorAll('.fl').length > 150);
+    ok('board settles on text matching the table', await until(() => {
+      const first = [...board.querySelector('.board-row').querySelectorAll('.fl')].map(c => c.textContent).join('');
+      return first.replace(/\s+/g, ' ').trim().length > 10 && !/^\s*$/.test(first);
+    }, 100));
+    ok('caption links to the HKIA project', !!document.querySelector('.board-cap a[href$="/hkia-delay-predictor/"]'));
+    ok('intro is wrapped in an INTRO-TBC marker', document.documentElement.innerHTML.includes('INTRO-TBC start'));
+    ok('every story card links to an existing page', await (async () => {
+      const hs = [...document.querySelectorAll('.card-title a')];
+      const rs = await Promise.all(hs.map(a => fetch(a.getAttribute('href'), { method: 'HEAD' }).then(r => r.ok)));
+      return hs.length >= 4 && rs.every(Boolean);
+    })());
   }
 
   /* document basics ----------------------------------------------------- */

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Story page. Copy this file to add a story, then add a card on index.html and
+     a line in sitemap.xml. Never type the two characters that close an HTML
+     comment inside another comment. -->
+<title>Six models, twelve pests, one semester in Sydney — Darren Wong Shih Jie</title>
+<meta name="description" content="My exchange project: which architecture is best at telling a weevil from a wasp, and where all of them fail.">
+<link rel="canonical" href="https://darrenwongsj.dev/stories/six-models-one-semester.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://darrenwongsj.dev/stories/six-models-one-semester.html">
+<meta property="og:title" content="Six models, twelve pests, one semester in Sydney — Darren Wong Shih Jie">
+<meta property="og:description" content="My exchange project: which architecture is best at telling a weevil from a wasp, and where all of them fail.">
+<meta property="og:image" content="https://darrenwongsj.dev/assets/img/pest-confusion-matrix.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../assets/img/favicon.png">
+<meta name="theme-color" content="#F6F4EF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1012" media="(prefers-color-scheme: dark)">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Six models, twelve pests, one semester in Sydney",
+  "description": "My exchange project: which architecture is best at telling a weevil from a wasp, and where all of them fail.",
+  "url": "https://darrenwongsj.dev/stories/six-models-one-semester.html",
+  "mainEntityOfPage": "https://darrenwongsj.dev/stories/six-models-one-semester.html",
+  "image": "https://darrenwongsj.dev/assets/img/pest-confusion-matrix.webp",
+  "author": { "@id": "https://darrenwongsj.dev/#person" }
+}
+</script>
+
+<link rel="preload" href="../assets/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../css/layout.css?v=4">
+<link rel="stylesheet" href="../css/styles.css?v=15">
+<link rel="stylesheet" href="../css/story.css?v=1">
+<script>
+(function(){var s=localStorage.getItem('theme');
+if(s==='dark'||(!s&&matchMedia('(prefers-color-scheme: dark)').matches))
+document.documentElement.classList.add('dark');})();
+</script>
+</head>
+
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header id="nav" class="site-header">
+  <nav class="wrap nav-bar flex items-center justify-between" aria-label="Primary">
+    <a href="../" class="nav-mark">DW<span>.</span></a>
+    <div class="flex items-center gap-4">
+      <a href="../#stories" class="nav-link">All stories</a>
+      <a href="../#contact" class="nav-link">Contact</a>
+      <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode">
+        <svg class="icon-sun w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        <svg class="icon-moon w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="story">
+  <article class="wrap story-wrap">
+    <!-- DRAFT-BANNER: delete this paragraph when the story is approved. -->
+    <p class="draft-note">Draft. Highlighted [TBC] notes are for Darren to fill in or cut before this goes live.</p>
+    <p class="story-meta"><a href="../#stories" class="link">Stories</a> &nbsp;/&nbsp; Sydney &nbsp;&middot;&nbsp; 3 min read</p>
+    <h1 class="story-title">Six models, twelve pests, one semester in Sydney</h1>
+    <p class="story-hook">My exchange project: which architecture is best at telling a weevil from a wasp, and where all of them fail.</p>
+    <figure class="story-fig">
+      <img src="../assets/img/pest-confusion-matrix.webp" width="1100" height="825" decoding="async" alt="Normalised confusion matrix for the YOLOv11 detector across twelve pest classes. Moths 0.98, snails 0.95, weevils 0.95, wasps 0.89, bees 0.85, down to caterpillars 0.48 and earthworms 0.47.">
+      <figcaption>Normalised confusion matrix for the YOLOv11 detector. The bright diagonal is where it is right.</figcaption>
+    </figure>
+    <div class="story-body">
+<p>From August to December 2025 I was on exchange at UNSW in Sydney, on a HKUST Fund Exchange Scholarship. <mark class="tbc">[TBC: Darren: which course the pest project belonged to, who you worked with, and one thing about Sydney that is not on a CV.]</mark></p>
+<p>My computer vision project there was a benchmark on the Kaggle crop pests dataset, which has twelve classes: ants, bees, beetles, caterpillars, earthworms, earwigs, grasshoppers, moths, slugs, snails, wasps and weevils. I trained six architectures head to head: three detectors (YOLO11n, Faster R-CNN and EfficientDet) and three classifiers (a Vision Transformer, EfficientNet and ConvNeXt).</p>
+<h2>The plumbing</h2>
+<p>Most of the work was not the models. The detectors expect different annotation formats, so I wrote a YOLO-to-COCO conversion. Training used early stopping, and I added explainability visualisations to see what each one was looking at. I also made a deliberately imbalanced split to test how each model behaved when some classes are rare.</p>
+<h2>What came out</h2>
+<p>The Vision Transformer reached 93.4% accuracy as a classifier. The YOLOv11 detector reached 0.825 mAP at an IoU of 0.5. The two are not directly comparable, because one is answering &ldquo;what is in this photo?&rdquo; and the other &ldquo;where, and what?&rdquo;.</p>
+<p>The more useful result was the confusion matrix. Moths (0.98), snails (0.95) and weevils (0.95) came out cleanly, and wasps and bees were close behind at 0.89 and 0.85. Caterpillars (0.48) and earthworms (0.47) were the hard classes. Most of their error was confusion with background rather than with each other.</p>
+<p>One reading of that is that more model capacity would not help a class the detector cannot separate from the background, and that better data for the hard cases probably would. <mark class="tbc">[TBC: Darren: did you test that, or is it only an inference? Say which, or cut the paragraph.]</mark></p>
+<p>The code is on <a href="https://github.com/dsjwong/cv-crop-pest-object-detection-benchmarking" class="link">GitHub</a>.</p>
+</div>
+
+    <aside class="story-end">
+      <p class="meta">Next story</p>
+      <p class="h3"><a href="retrain-looked-worse.html" class="link">The retrain that looked worse, and wasn&rsquo;t</a></p>
+      <p class="story-cta">Disagree, or want to compare notes? <a href="mailto:darrenwongsj@gmail.com" class="link">Email me</a> or <a href="../#work" class="link">see the projects</a>.</p>
+    </aside>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <p class="meta">&copy; <span id="year">2026</span> Darren Wong Shih Jie</p>
+    <a href="../" class="link meta">darrenwongsj.dev</a>
+  </div>
+</footer>
+<script src="../js/main.js"></script>
+</body>
+</html>

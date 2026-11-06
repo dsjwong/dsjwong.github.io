@@ -21,7 +21,9 @@ class NoCache(http.server.SimpleHTTPRequestHandler):
         self.send_header("Expires", "0")
         super().end_headers()
 
-socketserver.TCPServer.allow_reuse_address = True
-with socketserver.TCPServer(("", PORT), NoCache) as httpd:
+socketserver.ThreadingTCPServer.allow_reuse_address = True
+socketserver.ThreadingTCPServer.daemon_threads = True
+socketserver.ThreadingTCPServer.request_queue_size = 128
+with socketserver.ThreadingTCPServer(("", PORT), NoCache) as httpd:
     print(f"Serving on http://localhost:{PORT}  (Ctrl-C to stop)")
     httpd.serve_forever()

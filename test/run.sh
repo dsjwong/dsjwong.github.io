@@ -6,7 +6,7 @@
 #   ./test/run.sh 1440       test at one width
 #
 # Starts its own server on port 8799, injects test/suite.js into a temporary
-# copy of index.html, drives it in headless Chrome, and prints the results.
+# copy of index.html and of each stories/*.html, drives it in headless Chrome, and prints the results.
 # Nothing it creates is left behind.
 #
 # Checks: every anchor and asset resolves, no duplicate ids, theme toggle,
@@ -26,26 +26,32 @@ SERVER=$!
 trap 'kill $SERVER 2>/dev/null || true; rm -f _suite.html' EXIT
 until curl -s -o /dev/null "http://127.0.0.1:$PORT/"; do sleep 0.3; done
 
-python3 - <<'PY'
-import pathlib
-page  = pathlib.Path('index.html').read_text(encoding='utf-8')
-suite = pathlib.Path('test/suite.js').read_text(encoding='utf-8')
-pathlib.Path('_suite.html').write_text(
-    page.replace('</body>', '<script>\n%s\n</script>\n</body>' % suite), encoding='utf-8')
-PY
+PAGES=(index.html $(ls stories/*.html 2>/dev/null))
 
 fail_total=0
 WIDTHS=("$@"); [ ${#WIDTHS[@]} -eq 0 ] && WIDTHS=(1440 800 500)
+for PG in "${PAGES[@]}"; do
+python3 - "$PG" <<'PY'
+import pathlib, sys
+p = sys.argv[1]
+page  = pathlib.Path(p).read_text(encoding='utf-8')
+suite = pathlib.Path('test/suite.js').read_text(encoding='utf-8')
+base = '<base href="/%s">' % (p.rsplit('/', 1)[0] + '/' if '/' in p else '')
+page = page.replace('<head>', '<head>' + base, 1) if '/' in p else page
+pathlib.Path('_suite.html').write_text(
+    page.replace('</body>', '<script>\n%s\n</script>\n</body>' % suite), encoding='utf-8')
+PY
 for W in "${WIDTHS[@]}"; do
-  OUT=$("$CHROME" --headless --disable-gpu --window-size=$W,900 \
+  OUT=$("$CHROME" --headless --disable-gpu --user-data-dir="$(mktemp -d)" --window-size=$W,900 \
         --virtual-time-budget=25000 --dump-dom "http://127.0.0.1:$PORT/_suite.html" 2>/dev/null \
         | python3 -c "import sys,re,html;t=sys.stdin.read();m=re.search(r'<pre id=\"out\">(.*?)</pre>',t,re.S);print(html.unescape(m.group(1)) if m else 'NO OUTPUT — the suite crashed')")
   p=$(printf '%s' "$OUT" | grep -c '^PASS' || true)
   f=$(printf '%s' "$OUT" | grep -c '^FAIL' || true)
   fail_total=$((fail_total + f))
-  echo "─── ${W}px ─── $p passed, $f failed"
+  echo "─── $PG @ ${W}px ─── $p passed, $f failed"
   printf '%s\n' "$OUT" | grep -E '^(FAIL|INFO)' || true
   echo
+done
 done
 
 if [ "$fail_total" -gt 0 ]; then

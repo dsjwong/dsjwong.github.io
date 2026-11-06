@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Story page. Copy this file to add a story, then add a card on index.html and
+     a line in sitemap.xml. Never type the two characters that close an HTML
+     comment inside another comment. -->
+<title>Teaching a safety camera to stay quiet — Darren Wong Shih Jie</title>
+<meta name="description" content="False alarms are what make people stop listening to a monitor. What took ours from 181 to 4.">
+<link rel="canonical" href="https://darrenwongsj.dev/stories/teaching-a-camera-to-stay-quiet.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://darrenwongsj.dev/stories/teaching-a-camera-to-stay-quiet.html">
+<meta property="og:title" content="Teaching a safety camera to stay quiet — Darren Wong Shih Jie">
+<meta property="og:description" content="False alarms are what make people stop listening to a monitor. What took ours from 181 to 4.">
+<meta property="og:image" content="https://darrenwongsj.dev/assets/img/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../assets/img/favicon.png">
+<meta name="theme-color" content="#F6F4EF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1012" media="(prefers-color-scheme: dark)">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Teaching a safety camera to stay quiet",
+  "description": "False alarms are what make people stop listening to a monitor. What took ours from 181 to 4.",
+  "url": "https://darrenwongsj.dev/stories/teaching-a-camera-to-stay-quiet.html",
+  "mainEntityOfPage": "https://darrenwongsj.dev/stories/teaching-a-camera-to-stay-quiet.html",
+  "image": "https://darrenwongsj.dev/assets/img/og-cover.png",
+  "author": { "@id": "https://darrenwongsj.dev/#person" }
+}
+</script>
+
+<link rel="preload" href="../assets/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../css/layout.css?v=4">
+<link rel="stylesheet" href="../css/styles.css?v=15">
+<link rel="stylesheet" href="../css/story.css?v=1">
+<script>
+(function(){var s=localStorage.getItem('theme');
+if(s==='dark'||(!s&&matchMedia('(prefers-color-scheme: dark)').matches))
+document.documentElement.classList.add('dark');})();
+</script>
+</head>
+
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header id="nav" class="site-header">
+  <nav class="wrap nav-bar flex items-center justify-between" aria-label="Primary">
+    <a href="../" class="nav-mark">DW<span>.</span></a>
+    <div class="flex items-center gap-4">
+      <a href="../#stories" class="nav-link">All stories</a>
+      <a href="../#contact" class="nav-link">Contact</a>
+      <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode">
+        <svg class="icon-sun w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        <svg class="icon-moon w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="story">
+  <article class="wrap story-wrap">
+    <!-- DRAFT-BANNER: delete this paragraph when the story is approved. -->
+    <p class="draft-note">Draft. Highlighted [TBC] notes are for Darren to fill in or cut before this goes live.</p>
+    <p class="story-meta"><a href="../#stories" class="link">Stories</a> &nbsp;/&nbsp; CarryAI &nbsp;&middot;&nbsp; 3 min read</p>
+    <h1 class="story-title">Teaching a safety camera to stay quiet</h1>
+    <p class="story-hook">False alarms are what make people stop listening to a monitor. What took ours from 181 to 4.</p>
+    <div class="story-body">
+<p>At CarryAI I work on a vision-language safety monitor: a system that watches camera footage and raises an alert when something unsafe happens. My job this year has been the measuring. How often does it catch the thing it should, and how often does it cry wolf?</p>
+<p>I should be careful about what I can say here. This post describes what I did and the results already on my CV. It does not describe customers, sites or footage.</p>
+<h2>Labelling before tuning</h2>
+<p>I started by labelling, frame by frame, 650 or more frames of real construction CCTV. It is slow work, but it gives you something prompt tweaking never does: an answer key. Without one, every change to a prompt is a feeling.</p>
+<h2>Looking, then describing</h2>
+<p>One alert we care about is a person climbing over a rail. Sent a whole frame, the model often missed it: it caught 4 of 15 labelled frames. The people are small in a wide shot. A detect-then-describe pipeline fixed most of that. A YOLO detector finds each person, crops them, and only the crop goes to the language model. With that change it caught 14 of 14 on the same kind of footage. <mark class="tbc">[TBC: Darren: confirm 4/15 and 14/14 are measured on the same set of frames, and whether the 14/14 set is held-out. Then the comparison is safe to publish.]</mark></p>
+<h2>Giving the model a menu</h2>
+<p>The other problem was false alarms. A model asked an open question such as &ldquo;is anyone doing something dangerous?&rdquo; will find something to say. What worked better was a menu of states: instead of one yes-or-no question, I gave it a short list of mutually exclusive things a person might be doing, including ordinary ones, and had it pick one. On my labelled set, false alarms went from 181 to 4. <mark class="tbc">[TBC: Darren: check this describes the menu-of-states idea correctly, and say whether it is fine to name it this way publicly.]</mark></p>
+<h2>The product side</h2>
+<p>I also rebuilt the Prompt Helper, the tool customers use to write their own detection rules. Mining 133 real conversations showed that 80% of the abandoned ones ended before the user answered a single question. So the tool now drafts a rule instantly and lets the user refine it.</p>
+<p>What I would tell someone starting in this area: build the answer key first, and measure false alarms with the same care as misses, because a monitor people have learned to ignore catches nothing.</p>
+</div>
+
+    <aside class="story-end">
+      <p class="meta">Next story</p>
+      <p class="h3"><a href="hkia-lost-to-a-lookup-table.html" class="link">The week my model tied a lookup table</a></p>
+      <p class="story-cta">Disagree, or want to compare notes? <a href="mailto:darrenwongsj@gmail.com" class="link">Email me</a> or <a href="../#work" class="link">see the projects</a>.</p>
+    </aside>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <p class="meta">&copy; <span id="year">2026</span> Darren Wong Shih Jie</p>
+    <a href="../" class="link meta">darrenwongsj.dev</a>
+  </div>
+</footer>
+<script src="../js/main.js"></script>
+</body>
+</html>

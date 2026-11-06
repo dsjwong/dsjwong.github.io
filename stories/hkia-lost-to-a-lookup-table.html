@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Story page. Copy this file to add a story, then add a card on index.html and
+     a line in sitemap.xml. Never type the two characters that close an HTML
+     comment inside another comment. -->
+<title>The week my model tied a lookup table — Darren Wong Shih Jie</title>
+<meta name="description" content="I built an XGBoost model for flight delays, graded it in public, and found it only half beat a table of historical averages.">
+<link rel="canonical" href="https://darrenwongsj.dev/stories/hkia-lost-to-a-lookup-table.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://darrenwongsj.dev/stories/hkia-lost-to-a-lookup-table.html">
+<meta property="og:title" content="The week my model tied a lookup table — Darren Wong Shih Jie">
+<meta property="og:description" content="I built an XGBoost model for flight delays, graded it in public, and found it only half beat a table of historical averages.">
+<meta property="og:image" content="https://darrenwongsj.dev/assets/img/hkia-flight-card.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../assets/img/favicon.png">
+<meta name="theme-color" content="#F6F4EF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1012" media="(prefers-color-scheme: dark)">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The week my model tied a lookup table",
+  "description": "I built an XGBoost model for flight delays, graded it in public, and found it only half beat a table of historical averages.",
+  "url": "https://darrenwongsj.dev/stories/hkia-lost-to-a-lookup-table.html",
+  "mainEntityOfPage": "https://darrenwongsj.dev/stories/hkia-lost-to-a-lookup-table.html",
+  "image": "https://darrenwongsj.dev/assets/img/hkia-flight-card.webp",
+  "author": { "@id": "https://darrenwongsj.dev/#person" }
+}
+</script>
+
+<link rel="preload" href="../assets/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../css/layout.css?v=4">
+<link rel="stylesheet" href="../css/styles.css?v=15">
+<link rel="stylesheet" href="../css/story.css?v=1">
+<script>
+(function(){var s=localStorage.getItem('theme');
+if(s==='dark'||(!s&&matchMedia('(prefers-color-scheme: dark)').matches))
+document.documentElement.classList.add('dark');})();
+</script>
+</head>
+
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header id="nav" class="site-header">
+  <nav class="wrap nav-bar flex items-center justify-between" aria-label="Primary">
+    <a href="../" class="nav-mark">DW<span>.</span></a>
+    <div class="flex items-center gap-4">
+      <a href="../#stories" class="nav-link">All stories</a>
+      <a href="../#contact" class="nav-link">Contact</a>
+      <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode">
+        <svg class="icon-sun w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        <svg class="icon-moon w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="story">
+  <article class="wrap story-wrap">
+    <!-- DRAFT-BANNER: delete this paragraph when the story is approved. -->
+    <p class="draft-note">Draft. Highlighted [TBC] notes are for Darren to fill in or cut before this goes live.</p>
+    <p class="story-meta"><a href="../#stories" class="link">Stories</a> &nbsp;/&nbsp; HKIA &nbsp;&middot;&nbsp; 3 min read</p>
+    <h1 class="story-title">The week my model tied a lookup table</h1>
+    <p class="story-hook">I built an XGBoost model for flight delays, graded it in public, and found it only half beat a table of historical averages.</p>
+    <figure class="story-fig">
+      <img src="../assets/img/hkia-flight-card.webp" width="1200" height="750" decoding="async" alt="A flight card in the HKIA delay app showing a 59 percent chance of delay and the three factors behind it.">
+      <figcaption>A flight card from the app: the probability, and the three things pushing it up or down.</figcaption>
+    </figure>
+    <div class="story-body">
+<p>The HKIA Flight Delay Predictor takes a departure from Hong Kong airport and gives it a probability of leaving more than 15 minutes late. Behind that number is XGBoost trained on 38 features: rolling delay statistics for the airline and the airport, the weather at the field at the time, typhoon signals.</p>
+<p>The model is not the interesting part. The interesting part is the comparison I built next to it: a baseline that ignores almost everything and just looks up how late that airline usually is at that hour. If a model with 38 features cannot beat a lookup table, it is a very expensive lookup table.</p>
+<h2>Grading it where anyone can see</h2>
+<p>Every thirty minutes a GitHub Actions job re-scores every flight that has not left yet. When a flight finally departs, the prediction it carried is compared with what happened, and the result goes on a public report card. I did not want a number I could quietly choose the best week for, so the page shows a rolling seven-day window and a confidence interval on every margin.</p>
+<p>In the first week of live scoring the report card was not flattering. On the held-out test set the model won clearly. Live, the gap in AUC, which measures how well it ranks flights from least to most likely to be late, came out at +0.018 with a 95% interval of &minus;0.012 to +0.048. That interval includes zero, so the honest reading was a tie. On some days the lookup table ranked flights better than the model did.</p>
+<p>What did separate from noise was the error in minutes: the model was about 2.6 minutes closer on average, with an interval that stayed well clear of zero.</p>
+<h2>What I did with that</h2>
+<p>I left it on the page. The report prints a column headed &ldquo;separable from noise?&rdquo;, and a margin whose interval straddles zero is marked as reported, not claimed. The window I checked most recently, 28 October to 5 November, has the same shape: Brier score, log loss and minutes-error clearly better than the baseline, AUC +0.015 with an interval that still crosses zero.</p>
+<p>A lookup table is a stronger opponent than it sounds, because airlines and hours explain a lot of delay on their own. Where the model clearly earns its keep is in the probabilities and the minutes, not in the ranking. <mark class="tbc">[TBC: Darren: the moment you first saw the tie on the report card, and what you did next. Even two sentences of what it felt like would make this yours.]</mark></p>
+<p>The board at the top of this site reads the same data. Every percentage on it is one of those graded predictions, and you can <a href="https://darrenwongsj.dev/hkia-delay-predictor/" class="link">check how the model has been doing</a> before you believe any of them.</p>
+</div>
+
+    <aside class="story-end">
+      <p class="meta">Next story</p>
+      <p class="h3"><a href="why-airports.html" class="link">Why I keep ending up at airports</a></p>
+      <p class="story-cta">Disagree, or want to compare notes? <a href="mailto:darrenwongsj@gmail.com" class="link">Email me</a> or <a href="../#work" class="link">see the projects</a>.</p>
+    </aside>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <p class="meta">&copy; <span id="year">2026</span> Darren Wong Shih Jie</p>
+    <a href="../" class="link meta">darrenwongsj.dev</a>
+  </div>
+</footer>
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -7,17 +7,15 @@
 <!-- =========================================================================
      darrenwongsj.dev
 
-     HOW TO USE THIS FILE
-     Every section is fenced by a banner like the one you are reading.
-     Inside each, look for these two markers:
+     HOW THIS FILE IS ORGANISED
+     Each section is fenced by a banner like this one. Things to look for:
 
-         EDIT   safe as-is, but you will probably want to change it
+         INTRO-TBC      the hero intro is a draft: Darren picks the final text
+         CURRENTLY-TBC  the "Currently" note has placeholder values
+         PHOTO-SLOT     where a portrait goes later (see REDESIGN-NOTES.md)
 
-     The content is real, taken from your CV of 15 July 2026. Outstanding
-     optional items are listed in CONTENT.md.
-
-     Full instructions, deployment steps and design notes: see README.md
-     Preview:  python3 -m http.server 8000   then open localhost:8000
+     Preview:  python3 serve.py   then open localhost:8000
+     Never preview with python3 -m http.server (it caches stale CSS).
 
      NOTE FOR FUTURE EDITS: never type the two characters that close an HTML
      comment inside another comment. Doing so ends the comment early and
@@ -93,19 +91,17 @@
 }
 </script>
 
-<!-- Fonts are served from this repo, not from Google — see the top of
-     css/styles.css for why. Preloading the two that render first stops the
-     browser waiting to discover them inside the stylesheet. -->
+<!-- Fonts are served from this repo, not from Google. The two that paint
+     first are preloaded so the browser does not wait to discover them. -->
 <link rel="preload" href="assets/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/bricolage-grotesque-variable.woff2" as="font" type="font/woff2" crossorigin>
 
-<!-- Two stylesheets, no JavaScript libraries.
-       layout.css  grid, spacing, breakpoints  (the Tailwind class names, precompiled)
-       styles.css  colour, type, components     (the design system)
+<!-- layout.css  reset and layout utilities
+     styles.css  colour, type, components
      Bump the ?v= number after a big CSS change so browsers refetch. -->
-<link rel="stylesheet" href="css/layout.css?v=3">
-<link rel="stylesheet" href="css/styles.css?v=14">
-<noscript><style>[data-reveal]{opacity:1!important;transform:none!important}</style></noscript>
+<link rel="stylesheet" href="css/layout.css?v=4">
+<link rel="stylesheet" href="css/styles.css?v=15">
+<noscript><style>[data-reveal]{opacity:1!important;transform:none!important}.sr-only{position:static;width:auto;height:auto;margin:0;clip:auto;overflow:visible;white-space:normal}#board-table{color:#ECE8DC;background:#0A0B0D;border-radius:12px}#board-table th,#board-table td{padding:.35rem .75rem;text-align:left}.board-body{display:none}</style></noscript>
 
 <!-- Applies your saved theme before first paint so there is no flash. -->
 <script>
@@ -118,25 +114,20 @@ document.documentElement.classList.add('dark');})();
 <body>
 <a href="#main" class="skip-link">Skip to content</a>
 
-<!-- =========================================================================
-     NAVIGATION
-     EDIT: your initials in the mark, and the links.
-     If you delete a section below, delete its link from both menus here.
-     ========================================================================= -->
-<header id="nav" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
-  <nav class="wrap h-16 flex items-center justify-between" aria-label="Primary">
+<header id="nav" class="site-header">
+  <nav class="wrap nav-bar flex items-center justify-between" aria-label="Primary">
     <a href="#home" class="nav-mark">DW<span>.</span></a>
 
     <div class="flex items-center gap-4">
-      <div class="only-desktop items-center gap-5">
+      <div class="only-desktop items-center gap-6">
+        <a href="#stories"    class="nav-link" data-nav="stories">Stories</a>
         <a href="#work"       class="nav-link" data-nav="work">Work</a>
         <a href="#experience" class="nav-link" data-nav="experience">Experience</a>
-        <a href="#skills"     class="nav-link" data-nav="skills">Skills</a>
         <a href="#contact"    class="nav-link" data-nav="contact">Contact</a>
       </div>
       <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode">
-        <svg class="w-4 h-4 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-        <svg class="w-4 h-4 block dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+        <svg class="icon-sun w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        <svg class="icon-moon w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
       </button>
       <button id="menu-toggle" class="icon-btn only-mobile" aria-label="Open menu"
               aria-expanded="false" aria-controls="mobile-menu">
@@ -146,10 +137,10 @@ document.documentElement.classList.add('dark');})();
   </nav>
 
   <nav id="mobile-menu" class="only-mobile is-closed" aria-label="Mobile">
-    <div class="wrap py-5 flex flex-col gap-3">
+    <div class="wrap flex flex-col gap-3 mt-2" style="padding-bottom:1.25rem">
+      <a href="#stories"    class="nav-link" data-nav="stories">Stories</a>
       <a href="#work"       class="nav-link" data-nav="work">Work</a>
       <a href="#experience" class="nav-link" data-nav="experience">Experience</a>
-      <a href="#skills"     class="nav-link" data-nav="skills">Skills</a>
       <a href="#contact"    class="nav-link" data-nav="contact">Contact</a>
     </div>
   </nav>
@@ -159,121 +150,81 @@ document.documentElement.classList.add('dark');})();
 <main id="main">
 
 <!-- =========================================================================
-     HERO
+     HERO — the departures board is the hook.
 
-     Deliberately asymmetric: your name occupies the left two-thirds, the
-     facts sit in a panel on the right, and the whole block is anchored to
-     the bottom of the screen rather than floating in the middle.
-
-     EDIT: name, the one-line pitch, and every row of the side panel.
+     The board is built by js/board.js. Its rows come from the HKIA project's
+     live JSON; the six rows in the hidden table below are the fallback (a real
+     snapshot from 5 Nov 2026) and also the screen-reader version of the board.
+     To refresh the fallback, replace the <tr> rows with six upcoming flights.
      ========================================================================= -->
-<section id="home" class="min-h-[88svh] flex items-center pt-28 pb-20">
-  <div class="wrap w-full grid lg:grid-cols-12 gap-x-10 gap-y-12 items-center">
+<section id="home" class="hero">
+  <div class="wrap hero-grid">
 
-    <div class="lg:col-span-8">
-      <p data-reveal class="rail-label mb-8">Darren Wong Shih Jie &nbsp;/&nbsp; Software Engineer &nbsp;/&nbsp; Hong Kong</p>
+    <h1 class="hello">Hi, I&rsquo;m <em>Darren.</em></h1>
 
-      <h1 data-reveal class="display hero-name mb-8">
-        Darren<br>Wong
-      </h1>
-
-      <!-- EDIT: your pitch. One sentence. Name what you actually build, not
-           what you are studying. -->
-      <p data-reveal class="lede max-w-xl mb-10">
-        I build full-stack web applications and machine-learning systems —
-        from the database schema up to the model evaluation.
-      </p>
-
-      <div data-reveal class="flex flex-wrap gap-3">
-        <a href="#work" class="btn btn-solid">
-          Selected work <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
-        </a>
-        <a href="assets/resume.pdf" class="btn btn-line">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg> Résumé
-        </a>
-      </div>
-    </div>
-
-    <!-- The facts panel. Delete a side-row to remove a line. -->
-    <aside data-reveal class="lg:col-span-4 side-panel">
-      <div class="side-row flex items-center gap-2.5">
-        <span class="status-dot"></span>
-          <span class="meta">Open to 2027 internships &amp; graduate roles</span>
-      </div>
-      <div class="side-row">
-        <p class="meta mb-1.5">Currently</p>
-        <p class="text-sm" style="color:var(--ink)">AI Engineer Intern, CarryAI</p>
-        <p class="meta mt-1">Hong Kong</p>
-      </div>
-      <!-- The graduation year is deliberately stated WITHOUT a month. Both
-           possible paths (defer a course for a Summer 2027 internship, or a
-           full load and graduate mid-year) land in 2027, so this stays true
-           either way and cannot contradict whichever CV version was sent.
-           The precise date belongs on the CV, not here. -->
-      <div class="side-row">
-        <p class="meta mb-1.5">Studying</p>
-        <p class="text-sm" style="color:var(--ink)">BEng Computer Science, HKUST</p>
-        <p class="meta mt-1">Extended Major in Artificial Intelligence</p>
-        <p class="meta">Expected 2027</p>
-      </div>
-      <div class="side-row">
-        <p class="meta mb-2.5">Elsewhere</p>
-        <div class="flex flex-col gap-1.5 text-sm">
-          <a href="https://github.com/dsjwong" class="link">GitHub</a>
-          <a href="https://www.linkedin.com/in/dwsj" class="link">LinkedIn</a>
-          <a href="mailto:darrenwongsj@gmail.com" class="link">Email</a>
+    <div class="hero-board">
+      <div class="board" id="board">
+        <div class="board-head">
+          <span class="board-title">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>
+            Departures &nbsp;&middot;&nbsp; HKG
+          </span>
+          <span class="board-clock" aria-hidden="true">HKT --:--</span>
+        </div>
+        <div class="board-body" aria-hidden="true">
+          <div class="board-cols"><span>Flight</span><span>To</span><span>Time</span><span>Late</span></div>
+          <div class="board-rows"></div>
         </div>
       </div>
-    </aside>
 
-  </div>
-</section>
+      <div class="sr-only"><table id="board-table" data-source="snapshot">
+        <caption>Next departures from Hong Kong International Airport, with my model&rsquo;s predicted chance that each leaves more than 15 minutes late. Snapshot from 5 November 2026 unless the live feed has loaded.</caption>
+        <thead><tr><th scope="col">Flight</th><th scope="col">To</th><th scope="col">Scheduled (HKT)</th><th scope="col">Chance of leaving over 15 min late</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">CX 253</th><td data-name="LONDON">London</td><td>13:30</td><td data-p="0.344">34%</td></tr>
+          <tr><th scope="row">CX 870</th><td data-name="SAN FRAN">San Fran</td><td>13:30</td><td data-p="0.261">26%</td></tr>
+          <tr><th scope="row">CX 360</th><td data-name="SHANGHAI">Shanghai</td><td>13:35</td><td data-p="0.271">27%</td></tr>
+          <tr><th scope="row">NH 860</th><td data-name="TOKYO">Tokyo</td><td>14:20</td><td data-p="0.126">13%</td></tr>
+          <tr><th scope="row">CX 751</th><td data-name="BANGKOK">Bangkok</td><td>14:30</td><td data-p="0.244">24%</td></tr>
+          <tr><th scope="row">CX 635</th><td data-name="SINGAPORE">Singapore</td><td>15:05</td><td data-p="0.168">17%</td></tr>
+        </tbody>
+      </table></div>
 
-
-<!-- =========================================================================
-     ABOUT
-     Two or three short paragraphs. Say what you like working on and one
-     honest, specific detail. That is the part people remember.
-
-     Written from your CV. It is accurate, but the voice is not yet yours —
-     the last paragraph in particular is worth rewriting.
-     ========================================================================= -->
-<section id="about" class="section">
-  <div class="wrap grid lg:grid-cols-12 gap-x-10 gap-y-8">
-
-    <div class="lg:col-span-2">
-      <h2 data-reveal class="rail-label"><span class="rail-num">01</span> &nbsp;About</h2>
+      <p class="board-cap">
+        Live from my HKIA delay model &mdash;
+        <a href="https://darrenwongsj.dev/hkia-delay-predictor/" class="link">every prediction is graded in public &rarr;</a>
+      </p>
+      <p class="board-fine">The percentage is the model&rsquo;s chance a flight leaves more than 15 minutes late.
+        <span id="board-status">Snapshot, 5 Nov 2026.</span></p>
     </div>
 
-    <div class="lg:col-span-10 max-w-2xl">
-      <div data-reveal class="space-y-6 body">
-        <p class="lede" style="color:var(--ink)">
-          I spend most of my time somewhere between backend systems and machine learning.
-        </p>
-        <p>
-          I am reading Computer Science at HKUST with an extended major in Artificial
-          Intelligence. Right now I am an AI engineering intern at <strong>CarryAI</strong>,
-          running the measured evaluation programme for a vision-language safety monitor —
-          labelling real construction CCTV frame by frame, testing which pipeline and
-          prompt designs actually move recall and false alarms, and rebuilding the
-          prompt-authoring tool around what the production logs showed users doing.
-        </p>
-        <p>
-          Before that I spent a summer at <strong>Total Rehabilitation Management</strong>
-          working on a workflow analytics dashboard and a document classification pipeline,
-          and an exchange semester at <strong>UNSW Sydney</strong> benchmarking six
-          computer-vision architectures against each other on an agricultural pest dataset.
-        </p>
-        <p>
-          The problems I like are the ones where the hard part is not writing the code but
-          working out what the system should actually do — schema design, evaluation that is
-          not quietly misleading, the failure modes nobody wrote down.
-        </p>
-        <!-- EDIT: this last line is the one worth making yours. -->
-        <p>
-          Outside of that: aviation, finance, and badminton.
-        </p>
+    <div class="hero-copy">
+      <!-- INTRO-TBC start: draft intro. Two alternatives are in REDESIGN-NOTES.md. -->
+      <p class="intro">
+        I build machine-learning systems and then grade them in public. The one I
+        am proudest of predicts delays at Hong Kong&rsquo;s airport, waits for each
+        plane to leave, and marks its own homework &mdash; the board is live. Right
+        now I am an AI engineering intern at CarryAI, cutting false alarms from a
+        vision-language safety monitor.
+      </p>
+      <!-- INTRO-TBC end -->
+
+      <p class="where">HKUST &nbsp;&middot;&nbsp; CarryAI &nbsp;&middot;&nbsp; Hong Kong</p>
+
+      <!-- PHOTO-SLOT: to add a portrait, see REDESIGN-NOTES.md ("Adding a photo").
+           Nothing is rendered here until a file exists. -->
+
+      <div class="flex flex-wrap items-center gap-3 mt-8">
+        <a href="#stories" class="btn btn-solid">Read my stories</a>
+        <a href="#work" class="btn btn-line">See my work</a>
+        <a href="assets/resume.pdf" class="btn btn-line">CV</a>
+        <a href="mailto:darrenwongsj@gmail.com" class="link">or email me</a>
       </div>
+
+      <!-- CURRENTLY-TBC start -->
+      <p class="note"><b>Currently:</b> building <mark class="tbc">[TBC: current side project]</mark>,
+         reading <mark class="tbc">[TBC: a book or paper]</mark>.</p>
+      <!-- CURRENTLY-TBC end -->
     </div>
 
   </div>
@@ -281,515 +232,317 @@ document.documentElement.classList.add('dark');})();
 
 
 <!-- =========================================================================
-     SELECTED WORK
+     STORIES — the personal heart. Six drafts; each card links to stories/*.html.
+     Copy a card to add one. Cards without an image simply have no .card-media.
+     ========================================================================= -->
+<section id="stories" class="section">
+  <div class="wrap">
+    <div data-reveal>
+      <h2 class="h2">Stories</h2>
+      <p class="section-sub">The parts of the work that don&rsquo;t fit on a CV: what went wrong, what I got wrong, and what I would check next time.</p>
+    </div>
 
-     THE MOST IMPORTANT SECTION ON THE SITE. Recruiters skim the rest.
+    <div class="cards">
 
-     Four rules that decide whether a row helps you or not:
-       1. Lead with the RESULT, not the stack. "93.4% accuracy across 12
-          classes" says more than "used PyTorch and a ViT".
-       2. Only claim numbers you can point at in the repo.
-       3. Three to five entries. More reads as a list, fewer reads as thin.
-       4. Every link must work. A dead link is worse than no link.
+      <article data-reveal class="card">
+        <div class="card-media"><img src="assets/img/hkia-flight-card.webp" loading="lazy" decoding="async" width="1200" height="750" alt="A flight card in the HKIA delay app showing a 59 percent chance of delay and the three factors behind it."></div>
+        <div class="card-body">
+          <p class="card-meta"><span class="tag">HKIA</span><span class="meta">5 min read</span></p>
+          <h3 class="h3 card-title"><a href="stories/hkia-lost-to-a-lookup-table.html">The week my model tied a lookup table</a></h3>
+          <p class="card-hook">I built an XGBoost model for flight delays, graded it in public, and found it only half beat a table of historical averages.</p>
+          <p class="card-more">Read the story <span aria-hidden="true">&rarr;</span></p>
+        </div>
+      </article>
 
-     TO ADD A PROJECT: copy one whole article element. There is a blank
-     template at the bottom of the list, with the class "hidden" on it.
+      <article data-reveal class="card">
+        <div class="card-body">
+          <p class="card-meta"><span class="tag">Life</span><span class="meta">3 min read</span></p>
+          <h3 class="h3 card-title"><a href="stories/why-airports.html">Why I keep ending up at airports</a></h3>
+          <p class="card-hook">Aviation, three languages and a badminton court: the things that are not on my CV.</p>
+          <p class="card-more">Read the story <span aria-hidden="true">&rarr;</span></p>
+        </div>
+      </article>
+
+      <article data-reveal class="card">
+        <div class="card-media"><img src="assets/img/backtester-leakage-2022.webp" loading="lazy" decoding="async" width="1200" height="657" alt="Line chart of 2022 returns: the LLM agent given real tickers ends at plus 11.9 percent, the same agent with anonymised labels at plus 1.6 percent, equal-weight benchmark at minus 9.6 percent."></div>
+        <div class="card-body">
+          <p class="card-meta"><span class="tag">LLMs</span><span class="meta">4 min read</span></p>
+          <h3 class="h3 card-title"><a href="stories/does-the-llm-forecast-or-remember.html">Does the AI forecast the market, or remember it?</a></h3>
+          <p class="card-hook">Same model, same prices, same engine. Only the labels changed: +11.9% became +1.6%.</p>
+          <p class="card-more">Read the story <span aria-hidden="true">&rarr;</span></p>
+        </div>
+      </article>
+
+      <article data-reveal class="card">
+        <div class="card-media"><img src="assets/img/pest-confusion-matrix.webp" loading="lazy" decoding="async" width="1100" height="825" alt="Normalised confusion matrix for a YOLOv11 pest detector across twelve classes."></div>
+        <div class="card-body">
+          <p class="card-meta"><span class="tag">Sydney</span><span class="meta">4 min read</span></p>
+          <h3 class="h3 card-title"><a href="stories/six-models-one-semester.html">Six models, twelve pests, one semester in Sydney</a></h3>
+          <p class="card-hook">My exchange project: which architecture is best at telling a weevil from a wasp, and where all of them fail.</p>
+          <p class="card-more">Read the story <span aria-hidden="true">&rarr;</span></p>
+        </div>
+      </article>
+
+      <article data-reveal class="card">
+        <div class="card-media"><img src="assets/img/hkia-live-map.webp" loading="lazy" decoding="async" width="1200" height="750" alt="The live map page of the HKIA delay app: a dark map of the Pearl River Delta with a list of recent departures and their predicted delay."></div>
+        <div class="card-body">
+          <p class="card-meta"><span class="tag">HKIA</span><span class="meta">4 min read</span></p>
+          <h3 class="h3 card-title"><a href="stories/retrain-looked-worse.html">The retrain that looked worse, and wasn&rsquo;t</a></h3>
+          <p class="card-hook">A live number fell from 0.718 to 0.621 after a refit. Whether to roll back depended on which flights I compared.</p>
+          <p class="card-more">Read the story <span aria-hidden="true">&rarr;</span></p>
+        </div>
+      </article>
+
+      <article data-reveal class="card">
+        <div class="card-body">
+          <p class="card-meta"><span class="tag">CarryAI</span><span class="meta">4 min read</span></p>
+          <h3 class="h3 card-title"><a href="stories/teaching-a-camera-to-stay-quiet.html">Teaching a safety camera to stay quiet</a></h3>
+          <p class="card-hook">False alarms are what make people stop listening to a monitor. What took ours from 181 to 4.</p>
+          <p class="card-more">Read the story <span aria-hidden="true">&rarr;</span></p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================================
+     WORK — four projects. Numbers here were fact-checked against the repos.
      ========================================================================= -->
 <section id="work" class="section">
-  <div class="wrap grid lg:grid-cols-12 gap-x-10 gap-y-8">
-
-    <div class="lg:col-span-2">
-      <div data-reveal class="lg:sticky lg:top-28">
-        <h2 class="rail-label mb-4"><span class="rail-num">02</span> &nbsp;Selected work</h2>
-        <p class="meta" style="line-height:1.7">
-          Full source for each<br>is on GitHub.
-        </p>
-      </div>
+  <div class="wrap">
+    <div data-reveal>
+      <h2 class="h2">Work</h2>
+      <p class="section-sub">Four projects I would happily be quizzed on. Source for each is on GitHub.</p>
     </div>
 
-    <div class="lg:col-span-10">
+    <div class="projects">
 
-      <!-- ---------------------------------------------------------------
-           PROJECT 1 — HKIA Flight Delay Predictor
-           Live service. The repo is public; the dashboard is static JSON +
-           React on GitHub Pages. Live numbers come from the self-grading
-           evaluation loop, read 2026-10-29.
-           --------------------------------------------------------------- -->
-      <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
-        <p class="lg:col-span-1 row-num">01</p>
-
-        <div class="lg:col-span-7">
-          <a href="https://github.com/dsjwong/hkia-delay-predictor" class="row-title">
-            <h3 class="h3">HKIA Flight Delay Predictor</h3>
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-          </a>
-          <p class="meta mt-1">Live ML service — every prediction scored against the actual departure</p>
+      <article data-reveal class="project project-feature">
+        <a class="project-media" href="https://darrenwongsj.dev/hkia-delay-predictor/" aria-label="Open the live HKIA delay dashboard">
+          <img src="assets/img/hkia-live-map.webp" loading="lazy" decoding="async" width="1200" height="750"
+               alt="The live HKIA delay dashboard: a map of the Pearl River Delta beside a list of recent departures, each with a predicted chance of delay.">
+        </a>
+        <div class="project-body">
+          <h3 class="h3 project-title"><a href="https://darrenwongsj.dev/hkia-delay-predictor/">HKIA Flight Delay Predictor</a></h3>
+          <p class="project-lede">A live ML service. Every prediction is scored against the actual departure.</p>
           <p class="body mt-3">
             An end-to-end delay-prediction service for Hong Kong International Airport,
-            built on three public data feeds: 38 point-in-time features — rolling airline
-            and airport delay statistics, as-of METAR weather joins, typhoon signals —
+            built on three public data feeds: 38 point-in-time features &mdash; rolling airline
+            and airport delay statistics, as-of METAR weather joins, typhoon signals &mdash;
             feed XGBoost trained on a date-ordered split, reaching AUC 0.693 and a
             15.7-minute MAE on a held-out 6,580-flight test set. A scheduled GitHub
             Actions pipeline publishes predictions and a self-grading loop scores each one
             once the flight departs; scores export as static JSON, so the React +
             deck.gl dashboard is served entirely from static hosting.
           </p>
-          <p class="body mt-3">
-            <a href="https://darrenwongsj.dev/hkia-delay-predictor/" class="link">Live dashboard &rarr;</a>
+          <p class="live-line" id="hkia-live">
+            Right now: live AUC <b data-hkia="auc">0.669</b> against <b data-hkia="base">0.620</b> for a plain
+            airline&times;hour lookup, over <b data-hkia="n">2,951</b> graded predictions
+            (<span data-hkia="window">22&ndash;29 Oct 2026</span>).
+            <span class="live-note" data-hkia="note">Rolling 7-day window; snapshot 29 Oct 2026</span>
           </p>
-          <div class="flex flex-wrap gap-2 mt-5">
-            <span class="tag">Python</span>
-            <span class="tag">XGBoost</span>
-            <span class="tag">pandas</span>
-            <span class="tag">GitHub Actions</span>
-            <span class="tag">React</span>
-            <span class="tag">deck.gl</span>
-          </div>
-        </div>
-
-        <div class="lg:col-span-4 flex flex-col gap-3" id="hkia-live">
-          <div class="flex gap-10 lg:justify-end">
-            <div>
-              <p class="metric-value" data-hkia="auc">0.669</p>
-              <p class="metric-label">live AUC, vs <span data-hkia="base">0.620</span> airline&times;hour baseline</p>
-            </div>
-            <div>
-              <p class="metric-value" data-hkia="n">2,951</p>
-              <p class="metric-label">matured predictions, <span data-hkia="window">22&ndash;29 Oct 2026</span></p>
-            </div>
-          </div>
-          <p class="metric-label hkia-note" data-hkia="note">Rolling 7-day window; snapshot 29 Oct 2026</p>
+          <p class="project-links">
+            <a href="https://darrenwongsj.dev/hkia-delay-predictor/" class="link">Live dashboard</a>
+            <a href="https://github.com/dsjwong/hkia-delay-predictor" class="link">Source on GitHub</a>
+            <a href="stories/hkia-lost-to-a-lookup-table.html" class="link">The story behind it</a>
+          </p>
+          <p class="stack">Python, XGBoost, pandas, GitHub Actions, React, deck.gl</p>
         </div>
       </article>
 
-
-      <!-- ---------------------------------------------------------------
-           PROJECT 2 — LLM Trading-Agent Backtester
-           --------------------------------------------------------------- -->
-      <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
-        <p class="lg:col-span-1 row-num">02</p>
-
-        <div class="lg:col-span-7">
-          <a href="https://github.com/dsjwong/stockagent-backtester" class="row-title">
-            <h3 class="h3">LLM Trading-Agent Backtester</h3>
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-          </a>
-          <p class="meta mt-1">A data-contamination study — does the agent forecast, or remember?</p>
+      <article data-reveal class="project">
+        <a class="project-media" href="stories/does-the-llm-forecast-or-remember.html" aria-label="Read the story behind the backtester">
+          <img src="assets/img/backtester-leakage-2022.webp" loading="lazy" decoding="async" width="1200" height="657"
+               alt="Chart of 2022 returns: LLM agent with real tickers plus 11.9 percent, with anonymised labels plus 1.6 percent, equal-weight benchmark minus 9.6 percent.">
+        </a>
+        <div class="project-body">
+          <h3 class="h3 project-title"><a href="https://github.com/dsjwong/stockagent-backtester">LLM Trading-Agent Backtester</a></h3>
+          <p class="project-lede">A data-contamination study: does the agent forecast, or remember?</p>
           <p class="body mt-3">
-            A no-lookahead, event-driven backtester — decisions at close t, fills at open
-            t+1, 15 bps per side (30 bps round-trip) costs — replaying an LLM trading agent over fifteen US
+            A no-lookahead, event-driven backtester &mdash; decisions at close t, fills at open
+            t+1, 15 bps per side (30 bps round-trip) costs &mdash; replaying an LLM trading agent over fifteen US
             large-caps (2019&ndash;2026) against classical strategies. The agent turns out
             to be a high-turnover momentum chaser that trails simple equal-weight
             rebalancing risk-adjusted (1.04 vs 1.23 Sharpe) after a 3.5 pp/yr cost drag
-            at 9.4&times; annual turnover. A controlled A/B — identical engine, prices
-            and seed, real tickers versus anonymised labels — isolates data
-            contamination: the real-name arm also cited sector vocabulary never supplied
+            at 9.4&times; annual turnover. A controlled A/B &mdash; identical engine, prices
+            and seed, real tickers versus anonymised labels &mdash; isolates data
+            contamination: in 2022 the real-ticker arm returned +11.9% against +1.6%
+            anonymised, and also cited sector vocabulary never supplied
             in the prompt. 107 offline tests and a committed prompt cache replay every
             number for $0.
           </p>
-          <div class="flex flex-wrap gap-2 mt-5">
-            <span class="tag">Python</span>
-            <span class="tag">pandas</span>
-            <span class="tag">LLM APIs</span>
-            <span class="tag">pytest</span>
-          </div>
-        </div>
-
-        <div class="lg:col-span-4 flex gap-10 lg:justify-end">
-          <div>
-            <p class="metric-value">+11.9%</p>
-            <p class="metric-label">2022 return, real tickers</p>
-          </div>
-          <div>
-            <p class="metric-value">+1.6%</p>
-            <p class="metric-label">same run, anonymised</p>
-          </div>
+          <p class="project-links">
+            <a href="https://github.com/dsjwong/stockagent-backtester" class="link">Source on GitHub</a>
+            <a href="stories/does-the-llm-forecast-or-remember.html" class="link">The story</a>
+          </p>
+          <p class="stack">Python, pandas, LLM APIs, pytest</p>
         </div>
       </article>
 
-
-      <!-- ---------------------------------------------------------------
-           PROJECT 3 — Crop Pest Detection
-           --------------------------------------------------------------- -->
-      <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
-        <p class="lg:col-span-1 row-num">03</p>
-
-        <div class="lg:col-span-7">
-          <a href="https://github.com/dsjwong/cv-crop-pest-object-detection-benchmarking" class="row-title">
-            <h3 class="h3">Crop Pest Detection Benchmark</h3>
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-          </a>
+      <article data-reveal class="project">
+        <a class="project-media" href="https://github.com/dsjwong/cv-crop-pest-object-detection-benchmarking" aria-label="Open the pest detection repository">
+          <img src="assets/img/pest-confusion-matrix.webp" loading="lazy" decoding="async" width="1100" height="825"
+               alt="Normalised confusion matrix for the YOLOv11 detector across twelve pest classes. Moths 0.98, snails 0.95, weevils 0.95, wasps 0.89, bees 0.85, down to caterpillars 0.48 and earthworms 0.47.">
+        </a>
+        <div class="project-body">
+          <h3 class="h3 project-title"><a href="https://github.com/dsjwong/cv-crop-pest-object-detection-benchmarking">Crop Pest Detection Benchmark</a></h3>
+          <p class="project-lede">Six architectures, head to head. ViT 93.4% accuracy; YOLOv11 .825 mAP@0.5.</p>
           <p class="body mt-3">
-            Six deep-learning architectures — three detectors and three classifiers — trained
+            Six deep-learning architectures &mdash; three detectors and three classifiers &mdash; trained
             and evaluated head-to-head on the Kaggle crop pest dataset, with an end-to-end
             pipeline covering YOLO-to-COCO conversion, early stopping, explainability
             visualisations, and a deliberately imbalanced split to test robustness.
-            Completed on exchange at UNSW Sydney.
+            Completed on exchange at UNSW Sydney. In the matrix, moths, snails and weevils
+            resolve cleanly; caterpillars and earthworms are the hard classes, and most of
+            their error is confusion with background rather than with each other.
           </p>
-          <div class="flex flex-wrap gap-2 mt-5">
-            <span class="tag">PyTorch</span>
-            <span class="tag">ViT</span>
-            <span class="tag">YOLOv11</span>
-            <span class="tag">Faster R-CNN</span>
-            <span class="tag">EfficientDet</span>
-            <span class="tag">ConvNeXt</span>
-            <span class="tag">EfficientNet</span>
-          </div>
+          <p class="project-links">
+            <a href="https://github.com/dsjwong/cv-crop-pest-object-detection-benchmarking" class="link">Source on GitHub</a>
+            <a href="stories/six-models-one-semester.html" class="link">The story</a>
+          </p>
+          <p class="stack">PyTorch, ViT, YOLOv11, Faster R-CNN, EfficientDet, ConvNeXt, EfficientNet</p>
         </div>
-
-        <div class="lg:col-span-4 flex gap-10 lg:justify-end">
-          <div>
-            <p class="metric-value">93.4%</p>
-            <p class="metric-label">ViT accuracy</p>
-          </div>
-          <div>
-            <p class="metric-value">.825</p>
-            <p class="metric-label">YOLOv11 mAP@0.5</p>
-          </div>
-        </div>
-
-        <!-- A real result from the repo, not decoration. loading="lazy" means it
-             is only fetched when the reader scrolls near it, so it costs nothing
-             on first paint. To add a figure to another project, copy this block. -->
-        <figure class="lg:col-span-11 lg:col-start-2 mt-2">
-          <a href="assets/img/pest-confusion-matrix.png"
-             aria-label="Open the confusion matrix at full size">
-            <img src="assets/img/pest-confusion-matrix.png" loading="lazy" decoding="async"
-                 width="1100" height="825" class="figure-img"
-                 alt="Normalised confusion matrix for the YOLOv11 detector across twelve pest classes. Moths 0.98, Snails 0.95, Weevils 0.95, Wasps 0.89, Bees 0.85, down to Caterpillars 0.48 and Earthworms 0.47.">
-          </a>
-          <figcaption class="meta mt-3">
-            YOLOv11 normalised confusion matrix. Moths, snails and weevils resolve cleanly;
-            caterpillars and earthworms are the hard classes, and most of their error is
-            confusion with background rather than with each other.
-          </figcaption>
-        </figure>
       </article>
 
-
-      <!-- ---------------------------------------------------------------
-           PROJECT 4 — Library Management System
-           Stack read from backend/pom.xml and frontend/package.json.
-           Test count: 98 unit (surefire) + 71 integration (failsafe) = 169.
-           --------------------------------------------------------------- -->
-      <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
-        <p class="lg:col-span-1 row-num">04</p>
-
-        <div class="lg:col-span-7">
-          <a href="https://github.com/dsjwong/library-management-system" class="row-title">
-            <h3 class="h3">Library Management System</h3>
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-          </a>
+      <article data-reveal class="project project-wide">
+        <div class="project-body">
+          <h3 class="h3 project-title"><a href="https://github.com/dsjwong/library-management-system">Library Management System</a></h3>
+          <p class="project-lede">The ordinary domain, built the careful way.</p>
           <p class="body mt-3">
-            169 tests — 98 unit and 71 integration, the integration suite running against a
-            real PostgreSQL container rather than an in-memory stand-in — over a schema
+            169 tests &mdash; 98 unit and 71 integration, the integration suite running against a
+            real PostgreSQL container rather than an in-memory stand-in &mdash; over a schema
             managed entirely by Flyway migrations, with JWT authentication and role-based
             access across three user types. Started as a six-person team project and was
             substantially reworked afterwards. The domain is an ordinary one: catalogue,
             borrowing, reservations and fines.
           </p>
-          <div class="flex flex-wrap gap-2 mt-5">
-            <span class="tag">Java 17</span>
-            <span class="tag">Spring Boot</span>
-            <span class="tag">Spring Security</span>
-            <span class="tag">PostgreSQL</span>
-            <span class="tag">Flyway</span>
-            <span class="tag">Testcontainers</span>
-            <span class="tag">React 18</span>
-            <span class="tag">Vite</span>
-            <span class="tag">Docker</span>
-          </div>
-        </div>
-
-        <div class="lg:col-span-4 flex gap-10 lg:justify-end">
-          <div>
-            <p class="metric-value">169</p>
-            <p class="metric-label">tests passing</p>
-          </div>
-          <div>
-            <p class="metric-value">3</p>
-            <p class="metric-label">user roles</p>
-          </div>
-        </div>
-      </article>
-
-
-      <!-- ===================================================================
-           BLANK PROJECT TEMPLATE
-
-           To add a project: copy the markup below, paste it above this
-           comment, and remove the surrounding comment markers from the copy.
-           Then set the row number and fill in the content.
-
-           It is kept commented rather than hidden with CSS so that the
-           placeholder GitHub link is not in the page for a crawler to follow.
-
-      <article class="row grid lg:grid-cols-12 gap-x-8 gap-y-6">
-        <p class="lg:col-span-1 row-num">00</p>
-        <div class="lg:col-span-7">
-          <a href="https://github.com/dsjwong/REPO" class="row-title">
-            <h3 class="h3">Project name</h3>
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-          </a>
-          <p class="body mt-3">
-            What it does, who it is for, and the one genuinely hard part.
+          <p class="project-links">
+            <a href="https://github.com/dsjwong/library-management-system" class="link">Source on GitHub</a>
           </p>
-          <div class="flex flex-wrap gap-2 mt-5">
-            <span class="tag">Tech</span>
-          </div>
-        </div>
-        <div class="lg:col-span-4 flex gap-10 lg:justify-end">
-          <div><p class="metric-value">00</p><p class="metric-label">metric</p></div>
+          <p class="stack">Java 17, Spring Boot, Spring Security, PostgreSQL, Flyway, Testcontainers, React 18, Vite, Docker</p>
         </div>
       </article>
-           =================================================================== -->
-
-      <div data-reveal class="mt-10">
-        <!-- EDIT: your GitHub username -->
-        <a href="https://github.com/dsjwong" class="link meta">
-          Everything else on GitHub &nbsp;&rarr;
-        </a>
-      </div>
 
     </div>
+
+    <p data-reveal class="mt-8"><a href="https://github.com/dsjwong" class="link">Everything else is on GitHub &rarr;</a></p>
   </div>
 </section>
 
 
 <!-- =========================================================================
-     EXPERIENCE
-     Internships, part-time work, research, TA roles, society positions with
-     real responsibility.
-
-     Write each bullet as: did WHAT, using WHAT, producing WHAT RESULT.
-
-     Both entries come from your CV of 26 August 2026. Update them here when
-     the CV changes, and keep the two in step.
+     EXPERIENCE — one timeline, newest first. From the CV of Oct 2026.
      ========================================================================= -->
 <section id="experience" class="section">
-  <div class="wrap grid lg:grid-cols-12 gap-x-10 gap-y-8">
-
-    <div class="lg:col-span-2">
-      <h2 data-reveal class="rail-label lg:sticky lg:top-28"><span class="rail-num">03</span> &nbsp;Experience</h2>
+  <div class="wrap">
+    <div data-reveal>
+      <h2 class="h2">Experience</h2>
+      <p class="section-sub">Two internships, one exchange semester and a degree in progress.</p>
     </div>
 
-    <div class="lg:col-span-10">
+    <div class="timeline">
 
-      <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-4">
-        <p class="lg:col-span-2 meta"><time datetime="2026-06">Jun 2026 &ndash; Present</time></p>
-        <div class="lg:col-span-10">
-          <h3 class="h3">AI Engineer Intern</h3>
-          <p class="meta mt-1" style="color:var(--accent)">CarryAI Company Limited, Hong Kong</p>
-          <ul class="body mt-4 space-y-2 list-disc pl-5">
+      <article data-reveal class="tl-item is-now">
+        <p class="tl-date"><time datetime="2026-06">Jun 2026 &ndash; Present</time></p>
+        <div class="tl-body">
+          <h3 class="h3 tl-role">AI Engineer Intern</h3>
+          <p class="tl-org">CarryAI Company Limited, Hong Kong</p>
+          <ul class="tl-list">
             <li>Ran the measured evaluation programme for the company&rsquo;s vision-language
                 safety monitor: labelled 650+ frames of real Hong Kong construction CCTV and
-                showed a detect-then-describe pipeline — YOLO person crops fed to the VLM —
+                showed a detect-then-describe pipeline &mdash; YOLO person crops fed to the VLM &mdash;
                 lifts climbing-over-rail recall from <strong>4/15 to 14/14</strong> frames,
                 while menu-of-states prompt design cuts false alarms from
                 <strong>181 to 4</strong>.</li>
             <li>Built a 232-photo IoU benchmark for a structural-steel inspection client that
                 lifted rusted-bolt detection precision from <strong>0.25 to 0.70</strong>.</li>
             <li>Rebuilt the company&rsquo;s Prompt Helper into a client-testable product,
-                starting from 133 mined production conversations — 80% of abandonments came
+                starting from 133 mined production conversations &mdash; 80% of abandonments came
                 before users answered a single question: an instant-draft interview,
                 multi-frame rule building with negative-evidence frames, auth and CI across
                 43 commits, plus a standalone demo app with 58 tests.</li>
           </ul>
-          <div class="flex flex-wrap gap-2 mt-5">
-            <span class="tag">Python</span>
-            <span class="tag">YOLO</span>
-            <span class="tag">VLMs</span>
-            <span class="tag">LLM evaluation</span>
-          </div>
         </div>
       </article>
 
-      <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-4">
-        <p class="lg:col-span-2 meta"><time datetime="2025-06">Jun &ndash; Aug 2025</time></p>
-        <div class="lg:col-span-10">
-          <h3 class="h3">Software Engineer Intern</h3>
-          <p class="meta mt-1" style="color:var(--accent)">Total Rehabilitation Management (TRM HK), Hong Kong</p>
-          <ul class="body mt-4 space-y-2 list-disc pl-5">
+      <article data-reveal class="tl-item">
+        <p class="tl-date"><time datetime="2025-08">Aug &ndash; Dec 2025</time></p>
+        <div class="tl-body">
+          <h3 class="h3 tl-role">Exchange semester, Computer Science</h3>
+          <p class="tl-org">University of New South Wales, Sydney</p>
+          <ul class="tl-list">
+            <li>HKUST Fund Exchange Scholarship recipient.</li>
+            <li>Benchmarked six computer-vision architectures on an agricultural pest dataset
+                (<a href="stories/six-models-one-semester.html" class="link">the story</a>).</li>
+          </ul>
+        </div>
+      </article>
+
+      <article data-reveal class="tl-item">
+        <p class="tl-date"><time datetime="2025-06">Jun &ndash; Aug 2025</time></p>
+        <div class="tl-body">
+          <h3 class="h3 tl-role">Software Engineer Intern</h3>
+          <p class="tl-org">Total Rehabilitation Management (TRM HK), Hong Kong</p>
+          <ul class="tl-list">
             <li>Engineered a workflow analytics dashboard with data aggregation, multi-criteria
                 filtering and interactive visualisation, letting stakeholders monitor, track and
                 export K2 process metrics across both active and completed cases.</li>
             <li>Architected a document intelligence pipeline using TF-IDF vectorisation that
                 reached <strong>95% classification accuracy</strong> on unstructured document
-                types — incident reports, medical certificates, receipts.</li>
+                types &mdash; incident reports, medical certificates, receipts.</li>
             <li>Cut regulatory-report image payloads by <strong>up to 89%</strong> with lossless
                 compression, keeping within third-party platform constraints, and hardened
                 public endpoints with reCAPTCHA verification.</li>
           </ul>
-          <div class="flex flex-wrap gap-2 mt-5">
-            <span class="tag">C#</span>
-            <span class="tag">EF Core</span>
-            <span class="tag">SQL Server</span>
-            <span class="tag">TF-IDF</span>
-            <span class="tag">ImageSharp</span>
-          </div>
         </div>
       </article>
 
-    </div>
-  </div>
-</section>
-
-
-<!-- =========================================================================
-     LEADERSHIP AND INVOLVEMENT
-
-     Kept separate from Experience on purpose. Mixing mentoring and society
-     roles in with engineering internships makes a reader work out which is
-     which, and dilutes the two that carry the most weight.
-
-     Roles that belong here: mentoring, teaching assistantships, society
-     committees, volunteering, anything with real responsibility that is not
-     an engineering job.
-     ========================================================================= -->
-<section id="leadership" class="section">
-  <div class="wrap grid lg:grid-cols-12 gap-x-10 gap-y-8">
-
-    <div class="lg:col-span-2">
-      <h2 data-reveal class="rail-label lg:sticky lg:top-28"><span class="rail-num">04</span> &nbsp;Leadership</h2>
-    </div>
-
-    <div class="lg:col-span-10">
-
-      <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-4">
-        <p class="lg:col-span-2 meta"><time datetime="2025-06">Jun 2025 &ndash; Present</time></p>
-        <div class="lg:col-span-10">
-          <h3 class="h3">COMP &amp; CPEG Mentor</h3>
-          <p class="meta mt-1" style="color:var(--accent)">HKUST Department of Computer Science and Engineering</p>
-          <ul class="body mt-4 space-y-2 list-disc pl-5">
+      <article data-reveal class="tl-item">
+        <p class="tl-date"><time datetime="2025-06">Jun 2025 &ndash; Present</time></p>
+        <div class="tl-body">
+          <h3 class="h3 tl-role">COMP &amp; CPEG Mentor</h3>
+          <p class="tl-org">HKUST Department of Computer Science and Engineering</p>
+          <ul class="tl-list">
             <li>Advise first- and second-year computer science students on study planning,
                 academic strategy and co-curricular involvement.</li>
           </ul>
         </div>
       </article>
 
-      <article data-reveal class="row grid lg:grid-cols-12 gap-x-8 gap-y-4">
-        <p class="lg:col-span-2 meta"><time datetime="2024-11">Nov 2024 &ndash; Present</time></p>
-        <div class="lg:col-span-10">
-          <h3 class="h3">Peer Companion</h3>
-          <p class="meta mt-1" style="color:var(--accent)">HKUST Counselling and Wellness Centre</p>
-          <ul class="body mt-4 space-y-2 list-disc pl-5">
+      <article data-reveal class="tl-item">
+        <p class="tl-date"><time datetime="2024-11">Nov 2024 &ndash; Present</time></p>
+        <div class="tl-body">
+          <h3 class="h3 tl-role">Peer Companion</h3>
+          <p class="tl-org">HKUST Counselling and Wellness Centre</p>
+          <ul class="tl-list">
             <li>Facilitate small-group activities supporting social skills and peer
                 relationships, and organise university-wide wellness events.</li>
           </ul>
         </div>
       </article>
 
-    </div>
-  </div>
-</section>
+      <article data-reveal class="tl-item">
+        <p class="tl-date"><time datetime="2023-09">2023 &ndash; 2027</time></p>
+        <div class="tl-body">
+          <h3 class="h3 tl-role">BEng Computer Science</h3>
+          <p class="tl-org">Hong Kong University of Science and Technology</p>
+          <ul class="tl-list">
+            <li>Extended Major in Artificial Intelligence. Expected 2027.</li>
+            <li>Courses: AI/ML, Big Data Mining, Computer Vision, Software Engineering,
+                Operating Systems, Data Structures and Algorithms.</li>
+          </ul>
+        </div>
+      </article>
 
-
-<!-- =========================================================================
-     SKILLS
-     Only list what you would be comfortable being interviewed on. Padding
-     this list is the easiest way to get caught out in a phone screen.
-
-     EDIT: the four group names and the tags inside them.
-     ========================================================================= -->
-<section id="skills" class="section">
-  <div class="wrap grid lg:grid-cols-12 gap-x-10 gap-y-8">
-
-    <div class="lg:col-span-2">
-      <h2 data-reveal class="rail-label lg:sticky lg:top-28"><span class="rail-num">05</span> &nbsp;Skills</h2>
     </div>
 
-    <div class="lg:col-span-10">
-
-      <div data-reveal class="row row-tight grid lg:grid-cols-12 gap-x-8 gap-y-3 items-baseline">
-        <p class="lg:col-span-2 h3">Languages</p>
-        <div class="lg:col-span-10 flex flex-wrap gap-2">
-          <span class="tag">Python</span>
-          <span class="tag">TypeScript</span>
-          <span class="tag">JavaScript</span>
-          <span class="tag">C++</span>
-          <span class="tag">Java</span>
-          <span class="tag">C#</span>
-          <span class="tag">C</span>
-          <span class="tag">SQL</span>
-          <span class="tag">Bash</span>
-        </div>
-      </div>
-
-      <div data-reveal class="row row-tight grid lg:grid-cols-12 gap-x-8 gap-y-3 items-baseline">
-        <p class="lg:col-span-2 h3">ML &amp; Data</p>
-        <div class="lg:col-span-10 flex flex-wrap gap-2">
-          <span class="tag">PyTorch</span>
-          <span class="tag">TensorFlow</span>
-          <span class="tag">XGBoost</span>
-          <span class="tag">scikit-learn</span>
-          <span class="tag">pandas</span>
-          <span class="tag">NumPy</span>
-          <span class="tag">SHAP</span>
-          <span class="tag">YOLO</span>
-          <span class="tag">MLX</span>
-        </div>
-      </div>
-
-      <div data-reveal class="row row-tight grid lg:grid-cols-12 gap-x-8 gap-y-3 items-baseline">
-        <p class="lg:col-span-2 h3">Web &amp; Infra</p>
-        <div class="lg:col-span-10 flex flex-wrap gap-2">
-          <span class="tag">React</span>
-          <span class="tag">Vite</span>
-          <span class="tag">Streamlit</span>
-          <span class="tag">FastAPI</span>
-          <span class="tag">pytest</span>
-          <span class="tag">vitest</span>
-          <span class="tag">Docker</span>
-          <span class="tag">AWS</span>
-          <span class="tag">GitHub Actions</span>
-          <span class="tag">Git</span>
-          <span class="tag">PostgreSQL</span>
-          <span class="tag">MongoDB</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- =========================================================================
-     EDUCATION
-     From your CV. GPA is deliberately not shown — leave it out unless it is a
-     selling point, nobody asks why it is missing.
-     ========================================================================= -->
-<section id="education" class="section">
-  <div class="wrap grid lg:grid-cols-12 gap-x-10 gap-y-8">
-
-    <div class="lg:col-span-2">
-      <h2 data-reveal class="rail-label lg:sticky lg:top-28"><span class="rail-num">06</span> &nbsp;Education</h2>
-    </div>
-
-    <div class="lg:col-span-10">
-
-      <div data-reveal class="row row-tight grid lg:grid-cols-12 gap-x-8 gap-y-2">
-        <p class="lg:col-span-2 meta"><time datetime="2023-09">2023 &ndash; 2027</time></p>
-        <div class="lg:col-span-10">
-          <h3 class="h3">Hong Kong University of Science and Technology</h3>
-          <p class="body mt-1">
-            BEng Computer Science, Extended Major in Artificial Intelligence
-          </p>
-          <p class="meta mt-2">
-            AI/ML &middot; Big Data Mining &middot; Computer Vision &middot; Software Engineering
-            &middot; Operating Systems &middot; Data Structures and Algorithms
-          </p>
-        </div>
-      </div>
-
-      <div data-reveal class="row row-tight grid lg:grid-cols-12 gap-x-8 gap-y-2">
-        <p class="lg:col-span-2 meta"><time datetime="2025-08">Aug &ndash; Dec 2025</time></p>
-        <div class="lg:col-span-10">
-          <h3 class="h3">University of New South Wales, Sydney</h3>
-          <p class="body mt-1">Exchange semester, Computer Science</p>
-          <p class="meta mt-2">HKUST Fund Exchange Scholarship recipient</p>
-        </div>
-      </div>
-
+    <div data-reveal class="toolbox">
+      <p><b>Languages:</b> Python, TypeScript, JavaScript, C++, Java, C#, C, SQL, Bash.</p>
+      <p><b>ML and data:</b> PyTorch, TensorFlow, XGBoost, scikit-learn, pandas, NumPy, SHAP, YOLO, MLX.</p>
+      <p><b>Web and infra:</b> React, Vite, Streamlit, FastAPI, pytest, vitest, Docker, AWS, GitHub Actions, Git, PostgreSQL, MongoDB.</p>
+      <p><b>Spoken:</b> English and Bahasa Indonesia (native), Mandarin (HSK 4).</p>
     </div>
   </div>
 </section>
@@ -797,58 +550,45 @@ document.documentElement.classList.add('dark');})();
 
 <!-- =========================================================================
      CONTACT
-     EDIT: every link here. Check the email by sending yourself a message
-     from it. A wrong address on a portfolio site is the single most
-     expensive typo available.
      ========================================================================= -->
 <section id="contact" class="section">
-  <div class="wrap grid lg:grid-cols-12 gap-x-10 gap-y-8">
+  <div class="wrap">
+    <h2 data-reveal class="h2">Say hi</h2>
+    <p data-reveal class="contact-lede">
+      I am looking for software engineering internships and graduate roles for 2027, and I
+      am always glad to talk about backend systems, computer vision, or anything
+      aviation-adjacent. If a story above made you want to argue with me, even better.
+    </p>
 
-    <div class="lg:col-span-2">
-      <h2 data-reveal class="rail-label"><span class="rail-num">07</span> &nbsp;Contact</h2>
+    <div data-reveal class="flex flex-wrap items-center gap-4 mt-8">
+      <a href="mailto:darrenwongsj@gmail.com" class="link-xl">darrenwongsj@gmail.com</a>
+      <button id="copy-email" class="copy-btn" data-email="darrenwongsj@gmail.com"
+              aria-label="Copy email address to clipboard">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        <span aria-live="polite">Copy</span>
+      </button>
     </div>
 
-    <div class="lg:col-span-10">
-      <!-- EDIT: say what you actually want to hear about. -->
-      <p data-reveal class="lede max-w-xl mb-10">
-        I am looking for software engineering internships and graduate roles for 2027, and I
-        am always glad to talk about backend systems, computer vision, or anything
-        aviation-adjacent.
-      </p>
-
-      <div data-reveal class="flex flex-wrap items-center gap-4">
-        <a href="mailto:darrenwongsj@gmail.com" class="link-xl">
-          darrenwongsj@gmail.com
-          <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-        </a>
-        <button id="copy-email" class="copy-btn" data-email="darrenwongsj@gmail.com"
-                aria-label="Copy email address to clipboard">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-          <span aria-live="polite">Copy</span>
-        </button>
-      </div>
-
-      <div data-reveal class="flex flex-wrap gap-6 mt-12">
-        <a href="https://github.com/dsjwong" class="link meta">GitHub</a>
-        <a href="https://www.linkedin.com/in/dwsj" class="link meta">LinkedIn</a>
-        <a href="assets/resume.pdf" class="link meta">Résumé</a>
-      </div>
-    </div>
-
+    <p data-reveal class="elsewhere">
+      <a href="https://github.com/dsjwong" class="link">GitHub</a>
+      <a href="https://www.linkedin.com/in/dwsj" class="link">LinkedIn</a>
+      <a href="assets/resume.pdf" class="link">CV (PDF)</a>
+    </p>
   </div>
 </section>
 
 </main>
 
 
-<footer class="section" style="padding-block:2.5rem">
-  <div class="wrap flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+<footer class="site-footer">
+  <div class="wrap flex flex-col sm:flex-row sm:items-center justify-between gap-3">
     <p class="meta">&copy; <span id="year">2026</span> Darren Wong Shih Jie</p>
     <a href="#home" class="link meta">Back to top &nbsp;&uarr;</a>
   </div>
 </footer>
 
 <script src="js/main.js"></script>
+<script src="js/board.js" defer></script>
 <script src="js/hkia-live.js" defer></script>
 </body>
 </html>

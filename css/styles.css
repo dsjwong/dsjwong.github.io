@@ -1,48 +1,26 @@
 /* ==========================================================================
-   FONTS  —  self-hosted
-   ==========================================================================
+   FONTS — self-hosted (not Google Fonts: blocked in mainland China, slower,
+   and it hands every visitor's IP to Google). Three files, ~120 KB in all.
 
-   These files are served from this repo rather than from Google Fonts. Three
-   reasons, in order of how much they matter here:
-
-   1. fonts.googleapis.com is BLOCKED IN MAINLAND CHINA. Loading fonts from
-      Google means anyone viewing from the mainland waits for a request that
-      never completes, then sees the page in fallback system fonts. Given
-      where you are applying, that is not a hypothetical audience.
-   2. Speed. Google Fonts costs two extra DNS lookups and two extra TLS
-      handshakes to two more hosts before a single glyph arrives. Self-hosted
-      fonts come down the connection the page is already using.
-   3. Privacy. Requesting fonts from Google hands every visitor's IP address
-      to Google. German courts have ruled that this breaches GDPR when done
-      without consent.
-
-   Inter is a VARIABLE font: one 47 KB file covers every weight from 400 to
-   600, where three separate static weights would have cost 138 KB.
-
-   font-display: swap means text is painted immediately in the fallback font
-   and re-painted when the real one arrives — the page is never invisible
-   while a font loads.
-
-   To change a typeface: download the .woff2 from the foundry, drop it in
-   assets/fonts/, and edit the src and font-family below.
+     Bricolage Grotesque  headings            variable, one file
+     Inter                body text           variable, one file
+     JetBrains Mono       the departures board only
    ========================================================================== */
 
 @font-face {
+  font-family: "Bricolage Grotesque";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("../assets/fonts/bricolage-grotesque-variable.woff2") format("woff2");
+}
+@font-face {
   font-family: "Inter";
   font-style: normal;
-  font-weight: 400 600;                  /* variable range, not a single weight */
+  font-weight: 400 600;
   font-display: swap;
   src: url("../assets/fonts/inter-variable.woff2") format("woff2");
 }
-
-@font-face {
-  font-family: "Instrument Serif";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("../assets/fonts/instrument-serif-400.woff2") format("woff2");
-}
-
 @font-face {
   font-family: "JetBrains Mono";
   font-style: normal;
@@ -53,76 +31,61 @@
 
 
 /* ==========================================================================
-   styles.css  —  the design system
+   styles.css — the design system
    ==========================================================================
+   1 Palette   2 Base   3 Header   4 Hero + board   5 Sections   6 Stories
+   7 Projects  8 Timeline   9 Contact   10 Footer   11 Print
 
-   Tailwind (loaded in index.html) handles LAYOUT only: grids, spacing,
-   flexbox, responsive breakpoints.
-
-   This file handles everything you can SEE: colour, type, borders, hover
-   states. index.html uses short class names like  .h2  .row  .tag  .btn
-   and they are all defined here.
-
-   THE THREE THINGS YOU ARE MOST LIKELY TO WANT TO CHANGE:
-     1. The palette          — section 1, immediately below
-     2. Corner roundness     — --radius, section 1
-     3. The row hover effect — section 8
-
+   The one accent is departure-board amber. It is used as a highlighter
+   behind ink-coloured text, so contrast always comes from the ink.
    ========================================================================== */
 
 
 /* --------------------------------------------------------------------------
    1. PALETTE
-   --------------------------------------------------------------------------
-   Every colour on the site comes from these six variables. Change --accent
-   and the whole site re-skins: links, hover states, the section numbers,
-   the underlines.
-
-   Three alternative accents, if rust is not to your taste. Swap both the
-   :root and the .dark value together, the dark one is a lighter version so
-   it stays readable on a dark background.
-
-       Deep teal      light #0F5F57   dark #4FC4B4
-       Ink blue       light #1D4ED8   dark #7C9CFF
-       Forest         light #15803D   dark #4ADE80
    -------------------------------------------------------------------------- */
 
 :root {
-  --paper:   #FBFAF8;   /* page background - warm off-white, not pure white  */
-  --surface: #FFFFFF;   /* raised things: the hero side panel                */
-  --ink:     #17171A;   /* headings and strong text                          */
-  --body:    #4A4A50;   /* paragraphs                                        */
-  --muted:   #6F6F76;   /* labels, dates, metadata - WCAG AA on --paper      */
-  --line:    #E4E1DA;   /* hairline rules and borders                        */
-  --accent:  #9A3412;   /* rust                                              */
-  --accent-2:#7C2D12;   /* darker rust, for hover                            */
+  --paper:   #F6F4EF;
+  --surface: #FFFFFF;
+  --ink:     #14161A;
+  --body:    #3A3E46;
+  --muted:   #596069;
+  --line:    #DAD6CC;
+  --amber:   #FFB703;
+  --hl:      rgba(255, 183, 3, .45);
+  --hl-hover:#FFB703;
+  --warn:    #8A4B00;
 
-  --radius: 10px;
-  --radius-sm: .5rem;   /* buttons, tags */
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --board-bg:   #0A0B0D;
+  --board-edge: #2A2C31;
+  --flap:       #17191D;
+  --flap-text:  #FFC62E;
+  --flap-hot:   #FF8F70;
+  --board-dim:  #A29D8F;
+  --board-ink:  #ECE8DC;
 
-  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --ease: cubic-bezier(.16, 1, .3, 1);
+
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
 .dark {
-  --paper:   #121110;   /* warm near-black, NOT navy                         */
-  --surface: #1A1917;
-  --ink:     #F2F0EB;
-  --body:    #ACA79E;
-  --muted:   #8B857C;
-  --line:    #2B2825;
-  --accent:  #E8845C;
-  --accent-2:#F2A183;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: .01ms !important;
-    transition-duration: .01ms !important;
-    scroll-behavior: auto !important;
-  }
+  --paper:   #0F1012;
+  --surface: #17181B;
+  --ink:     #F3F1EA;
+  --body:    #BDBAB2;
+  --muted:   #9A978F;
+  --line:    #2B2C30;
+  --amber:   #FFC53D;
+  --hl:      rgba(255, 197, 61, .3);
+  --hl-hover:#FFC53D;
+  --warn:    #FFC53D;
+  --board-edge: #34363C;
 }
 
 
@@ -130,420 +93,366 @@
    2. BASE
    -------------------------------------------------------------------------- */
 
-html { scroll-behavior: smooth; }
-
-/* --------------------------------------------------------------------------
-   SCALING FOR LARGE MONITORS
-   --------------------------------------------------------------------------
-   Every size on this site is written in rem, which means "multiples of the
-   root font size". So changing that one number scales the ENTIRE layout
-   together - text, padding, gaps, and the container width - instead of just
-   adding more empty margin at the sides.
-
-       16px up to 1440px wide   (laptop: unchanged)
-       ~17.7px at 1920px        (24 inch monitor)
-       20px at 2560px and above (27 inch and up)
-
-   This is why the site fills a big screen instead of sitting in the middle
-   of it. If a large monitor still feels too roomy, raise the 20px cap.
-   -------------------------------------------------------------------------- */
-:root { font-size: clamp(16px, 0.357vw + 10.86px, 20px); }
+html { scroll-behavior: smooth; font-size: clamp(16px, .357vw + 10.86px, 20px); }
 
 body {
   background: var(--paper);
   color: var(--body);
   font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "cv11", "ss01";
 }
 
-::selection { background: var(--accent); color: #fff; }
+::selection { background: var(--amber); color: #14161A; }
 
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 3px;
-}
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
+.dark :focus-visible { outline-color: var(--amber); }
 
 .skip-link {
   position: absolute; left: -9999px; top: 0; z-index: 100;
-  padding: .75rem 1.25rem; background: var(--accent); color: #fff;
+  padding: .75rem 1.25rem; background: var(--ink); color: var(--paper);
   font-size: .875rem; font-weight: 500;
 }
 .skip-link:focus { left: 0; }
 
-/* The container every section sits in. Two jobs:
-     max-width  stops lines getting unreadably long on a big monitor
-     padding    scales with the viewport so it never touches the edge on a phone
-   This pair is what makes a site work at 375px and at 2560px. */
 .wrap {
   width: 100%;
-  max-width: 84rem;                          /* see note above: this grows with
-                                                the root font size, so it is
-                                                1344px on a laptop and ~1680px
-                                                on a 27 inch monitor */
+  max-width: 76rem;
   margin-inline: auto;
-  padding-inline: clamp(1.25rem, 5vw, 3rem); /* 20px on a phone, 48px on a desktop */
+  padding-inline: clamp(1rem, 4.5vw, 3rem);
 }
 
-/* Sections are separated by a hairline, not by a colour block.
-   Vertical rhythm scales with the viewport too, so a phone is not scrolling
-   through desktop-sized gaps. */
-.section {
-  padding-block: clamp(3.5rem, 9vw, 7rem);
-  scroll-margin-top: 5rem;
-  border-top: 1px solid var(--line);
+/* Links inside copy: ink text with an amber highlighter stroke behind it. */
+.link {
+  color: var(--ink);
+  font-weight: 500;
+  background: linear-gradient(var(--hl), var(--hl)) 0 92% / 100% .42em no-repeat;
+  transition: background-size .25s var(--ease), background-color .2s;
+}
+.link:hover { background-size: 100% 100%; }
+
+[data-reveal] { opacity: 0; transform: translateY(14px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+[data-reveal].is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-reveal] { opacity: 1; transform: none; }
 }
 
 
 /* --------------------------------------------------------------------------
-   3. NAVIGATION
+   3. HEADER
    -------------------------------------------------------------------------- */
 
-.nav-link {
-  font-family: var(--font-mono);
-  font-size: .75rem; letter-spacing: .06em; text-transform: uppercase;
-  color: var(--muted);
-  padding: .5rem .25rem;
-  position: relative;
-  transition: color .2s;
+.site-header {
+  position: fixed; inset: 0 0 auto 0; z-index: 50;
+  transition: background-color .3s, border-color .3s;
+  border-bottom: 1px solid transparent;
 }
-.nav-link::after {
-  content: ""; position: absolute; left: .25rem; right: .25rem; bottom: .3rem;
-  height: 1px; background: var(--accent);
-  transform: scaleX(0); transform-origin: left;
-  transition: transform .3s var(--ease);
+.site-header.is-scrolled {
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  border-bottom-color: var(--line);
+  backdrop-filter: blur(8px);
 }
-.nav-link:hover { color: var(--ink); }
-.nav-link:hover::after { transform: scaleX(1); }
+.nav-bar { height: 4rem; }
 
 .nav-mark {
-  font-family: var(--font-display);
-  font-size: 1.5rem; color: var(--ink); letter-spacing: -.01em;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.375rem;
+  letter-spacing: -.03em; color: var(--ink);
 }
-.nav-mark span { color: var(--accent); }
+.nav-mark span { color: var(--warn); }
 
-/* The section you are currently reading. js/main.js sets aria-current as you
-   scroll; using the ARIA attribute rather than a class means screen readers
-   are told the same thing sighted users are shown. */
-.nav-link[aria-current="true"] { color: var(--ink); }
-.nav-link[aria-current="true"]::after { transform: scaleX(1); }
-
-/* Copy-to-clipboard button beside the email address in the contact section. */
-.copy-btn {
-  display: inline-flex; align-items: center; gap: .5rem;
-  padding: .5rem .875rem;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  font-family: var(--font-mono);
-  font-size: .75rem;
-  color: var(--muted);
-  transition: color .2s, border-color .2s;
+.nav-link {
+  font-size: .9375rem; font-weight: 500; color: var(--body);
+  padding: .25rem 0; transition: color .2s;
 }
-.copy-btn:hover      { color: var(--ink);    border-color: var(--accent); }
-.copy-btn.is-copied  { color: var(--accent); border-color: var(--accent); }
-
-#nav.is-scrolled {
-  background: color-mix(in srgb, var(--paper) 85%, transparent);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--line);
-}
+.nav-link:hover, .nav-link[aria-current="true"] { color: var(--ink); }
+.nav-link[aria-current="true"] { background: linear-gradient(var(--hl), var(--hl)) 0 100% / 100% .3em no-repeat; }
 
 .icon-btn {
-  display: inline-flex; padding: .5rem; border-radius: var(--radius);
-  color: var(--muted); transition: color .2s, background-color .2s;
+  display: grid; place-items: center; width: 2.5rem; height: 2.5rem;
+  border-radius: 999px; color: var(--body); transition: background-color .2s, color .2s;
 }
-.icon-btn:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 6%, transparent); }
+.icon-btn:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 8%, transparent); }
+.icon-btn.only-mobile { display: grid; }
+@media (min-width: 1024px) { .icon-btn.only-mobile { display: none; } }
+.icon-sun { display: none; }
+.dark .icon-sun { display: block; }
+.dark .icon-moon { display: none; }
+
+#mobile-menu { background: var(--paper); border-bottom: 1px solid var(--line); }
+#mobile-menu.is-closed { display: none; }
+#mobile-menu .nav-link { font-size: 1.0625rem; padding: .5rem 0; }
 
 
 /* --------------------------------------------------------------------------
-   4. TYPOGRAPHY
+   4. HERO + DEPARTURES BOARD
    -------------------------------------------------------------------------- */
 
-/* The small mono label that sits in the left rail of every section. */
-.rail-label {
-  font-family: var(--font-mono);
-  font-size: .6875rem; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--muted);
+.hero { padding-top: 7rem; padding-bottom: clamp(3rem, 8vw, 6rem); }
+.hero-grid { display: grid; gap: 1.75rem 3.5rem; align-items: center; grid-template-areas: "hello" "board" "copy"; }
+.hello { grid-area: hello; }
+.hero-board { grid-area: board; }
+.hero-copy { grid-area: copy; }
+
+.hello {
+  font-family: var(--font-display); font-weight: 800; color: var(--ink);
+  font-size: clamp(3rem, 11vw, 5.25rem); line-height: .98; letter-spacing: -.04em;
 }
-.rail-num { color: var(--accent); }
+.hello em { font-style: normal; background: linear-gradient(var(--hl), var(--hl)) 0 88% / 100% .3em no-repeat; }
 
-.display {
-  font-family: var(--font-display);
-  font-weight: 400;
-  color: var(--ink);
-  letter-spacing: -.02em;
-  line-height: .95;
-}
-
-
-.h3 {
-  font-size: 1.1875rem; font-weight: 600; letter-spacing: -.01em;
-  color: var(--ink);
-}
-
-.lede { font-size: clamp(1.125rem, 2vw, 1.375rem); line-height: 1.6; color: var(--body); }
-.body { font-size: 1rem; line-height: 1.75; color: var(--body); }
-.body strong { color: var(--ink); font-weight: 600; }
-
-.meta {
-  font-family: var(--font-mono);
-  font-size: .75rem; color: var(--muted); letter-spacing: .02em;
-}
-
-
-/* --------------------------------------------------------------------------
-   5. BUTTONS AND LINKS
-   -------------------------------------------------------------------------- */
+.intro { margin-top: 1.5rem; font-size: 1.1875rem; line-height: 1.6; color: var(--ink); max-width: 30rem; }
+.where { margin-top: 1rem; font-size: .9375rem; color: var(--muted); }
 
 .btn {
   display: inline-flex; align-items: center; gap: .5rem;
-  padding: .75rem 1.375rem;
-  border-radius: var(--radius);
-  font-size: .9375rem; font-weight: 500;
-  border: 1px solid transparent;
-  transition: all .25s var(--ease);
+  padding: .7rem 1.15rem; border-radius: 999px; border: 1.5px solid transparent;
+  font-size: .9375rem; font-weight: 500; line-height: 1.2;
+  transition: background-color .2s, color .2s, border-color .2s, transform .2s var(--ease);
 }
+.btn:hover { transform: translateY(-2px); }
 .btn-solid { background: var(--ink); color: var(--paper); }
-.btn-solid:hover { background: var(--accent); }
+.btn-solid:hover { background: var(--amber); color: #14161A; }
+.btn-line { border-color: var(--ink); color: var(--ink); }
+.btn-line:hover { background: var(--hl); }
 
-.btn-line { border-color: var(--line); color: var(--ink); }
-.btn-line:hover { border-color: var(--accent); color: var(--accent); }
-
-/* Inline text link with an animated underline. */
-.link {
-  color: var(--ink);
-  background-image: linear-gradient(var(--accent), var(--accent));
-  background-size: 0% 1px; background-repeat: no-repeat; background-position: 0 100%;
-  transition: background-size .3s var(--ease), color .2s;
+.note {
+  margin-top: 2rem; max-width: 21rem; padding: .9rem 1.1rem;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 4px;
+  box-shadow: 0 1px 0 var(--line), 0 10px 22px -16px rgba(20, 22, 26, .35);
+  transform: rotate(-1.2deg); font-size: .9375rem; line-height: 1.55; color: var(--body);
 }
-.link:hover { color: var(--accent); background-size: 100% 1px; }
+.tbc { background: var(--hl); color: var(--ink); padding: 0 .2em; border-radius: 3px; }
+.note b { color: var(--ink); font-family: var(--font-display); font-size: 1.0625rem; font-weight: 700; }
 
-/* The big email link in the contact section. */
-.link-xl {
-  font-family: var(--font-display);
-  font-size: clamp(1.75rem, 5vw, 3.25rem);
-  line-height: 1.1; color: var(--ink);
-  display: inline-flex; align-items: center; gap: .75rem;
-  transition: color .25s;
+/* The board. Always dark, in both themes — it is a piece of signage. */
+.board {
+  container-type: inline-size;
+  background: var(--board-bg); border: 1px solid var(--board-edge);
+  border-radius: var(--radius); padding: clamp(.75rem, 3cqw, 1.5rem);
+  box-shadow: 0 24px 40px -28px rgba(0, 0, 0, .55);
+  color: var(--board-ink);
 }
-.link-xl:hover { color: var(--accent); }
-.link-xl svg { transition: transform .3s var(--ease); }
-.link-xl:hover svg { transform: translate(4px, -4px); }
+.board-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .9rem; }
+.board-title {
+  display: flex; align-items: center; gap: .6rem;
+  font-family: var(--font-display); font-weight: 700; font-size: 1.125rem; letter-spacing: .02em; color: var(--board-ink);
+}
+.board-title svg { color: var(--flap-text); }
+.board-clock { font-family: var(--font-mono); font-size: .875rem; color: var(--flap-text); }
+
+.board-body {
+  --n: 36.4;
+  --cw: min(1.5rem, calc((100cqw - 2 * clamp(.75rem, 3cqw, 1.5rem)) / var(--n)));
+  --cols: calc(var(--cw) * 7.6) calc(var(--cw) * 13.2) calc(var(--cw) * 6.48) calc(var(--cw) * 8.84);
+}
+.board-cols {
+  display: grid; grid-template-columns: var(--cols); white-space: nowrap;
+  font-size: .6875rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--board-dim); margin-bottom: .4rem;
+}
+.board-rows { display: grid; gap: calc(var(--cw) * .28); }
+.board-row { display: grid; grid-template-columns: var(--cols); }
+.grp { display: flex; gap: calc(var(--cw) * .12); }
+
+.fl {
+  position: relative; display: block; flex: none;
+  width: var(--cw); height: calc(var(--cw) * 1.7); line-height: calc(var(--cw) * 1.7);
+  text-align: center; font-family: var(--font-mono); font-size: calc(var(--cw) * 1.4);
+  color: var(--flap-text); border-radius: 2px;
+  background: linear-gradient(to bottom, #1E2025 50%, var(--flap) 50%);
+}
+.fl::after { content: ""; position: absolute; inset: 50% 0 auto 0; height: 1px; background: rgba(0, 0, 0, .75); }
+.fl.hot { color: var(--flap-hot); }
+.fl.flip { animation: flip .14s ease-out; }
+@keyframes flip { from { transform: scaleY(.2); } to { transform: scaleY(1); } }
+
+@container (max-width: 34rem) {
+  .board-body {
+    --n: 30.6;
+    --cols: calc(var(--cw) * 7.6) calc(var(--cw) * 13.2) calc(var(--cw) * 6.48) calc(var(--cw) * 3.24);
+  }
+  .late-word { display: none; }
+}
+
+.board-cap { margin-top: 1rem; font-size: .9375rem; line-height: 1.55; color: var(--body); }
+.board-cap .link { white-space: normal; }
+.board-fine { margin-top: .35rem; font-size: .8125rem; color: var(--muted); }
+
+@media (min-width: 1024px) {
+  .hero { padding-top: 8.5rem; }
+  .hero-grid { grid-template-columns: 5fr 7fr; grid-template-areas: "hello board" "copy board"; grid-template-rows: auto auto; }
+  .hello { align-self: end; }
+  .hero-copy { align-self: start; }
+}
 
 
 /* --------------------------------------------------------------------------
-   6. TAGS AND METRICS
+   5. SECTIONS
    -------------------------------------------------------------------------- */
+
+.section { padding-block: clamp(3.5rem, 9vw, 6.5rem); scroll-margin-top: 4rem; }
+.section + .section { border-top: 1px solid var(--line); }
+
+.h2 {
+  font-family: var(--font-display); font-weight: 800; color: var(--ink);
+  font-size: clamp(2rem, 6vw, 3.25rem); line-height: 1.04; letter-spacing: -.035em;
+}
+.section-sub { margin-top: .9rem; max-width: 36rem; font-size: 1.0625rem; }
+
+.h3 { font-family: var(--font-display); font-weight: 700; color: var(--ink); letter-spacing: -.02em; line-height: 1.2; }
+.body { font-size: 1rem; line-height: 1.7; }
+.meta { font-size: .875rem; color: var(--muted); }
+
+.stack { margin-top: 1.1rem; font-size: .875rem; color: var(--muted); }
 
 .tag {
-  font-family: var(--font-mono);
-  font-size: .6875rem; letter-spacing: .01em;
-  color: var(--muted);
-  padding: .1875rem .5rem;
-  border: 1px solid var(--line);
-  border-radius: 5px;
-  white-space: nowrap;
+  display: inline-block; font-size: .8125rem; font-weight: 500; color: var(--ink);
+  padding: .15rem .65rem; border-radius: 999px; background: var(--hl);
+}
+
+
+/* --------------------------------------------------------------------------
+   6. STORY CARDS (home page)
+   -------------------------------------------------------------------------- */
+
+.cards { display: grid; gap: 1.25rem; margin-top: 2.5rem; }
+
+.card {
+  position: relative; display: flex; flex-direction: column; overflow: hidden;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  transition: transform .3s var(--ease), border-color .2s, box-shadow .3s;
+}
+.card:hover { transform: translateY(-3px); border-color: var(--ink); box-shadow: 0 18px 30px -24px rgba(20, 22, 26, .5); }
+.card-media { aspect-ratio: 16 / 9; overflow: hidden; border-bottom: 1px solid var(--line); background: var(--board-bg); }
+.card-media img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .6s var(--ease); }
+.card:hover .card-media img { transform: scale(1.03); }
+.card-body { display: flex; flex-direction: column; flex: 1; padding: 1.25rem 1.35rem 1.4rem; }
+.card-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .75rem; margin-bottom: .75rem; }
+.card-title { font-size: 1.3125rem; }
+.card-title a::after { content: ""; position: absolute; inset: 0; }
+.card-hook { margin-top: .6rem; font-size: .9688rem; line-height: 1.6; }
+.card-more { margin-top: auto; padding-top: 1rem; font-size: .9375rem; font-weight: 500; color: var(--ink); }
+.card-more span { display: inline-block; transition: transform .25s var(--ease); }
+.card:hover .card-more span { transform: translateX(4px); }
+
+@media (min-width: 700px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .cards { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; } }
+
+
+/* --------------------------------------------------------------------------
+   7. PROJECTS
+   -------------------------------------------------------------------------- */
+
+.projects { display: grid; gap: 1.5rem; margin-top: 2.5rem; }
+
+.project {
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+}
+.project-media { display: block; overflow: hidden; background: var(--board-bg); border-bottom: 1px solid var(--line); }
+.project-media img { width: 100%; transition: transform .6s var(--ease); }
+.project-media:hover img { transform: scale(1.025); }
+.project-body { padding: 1.5rem 1.5rem 1.75rem; display: flex; flex-direction: column; flex: 1; }
+.project-title { font-size: 1.625rem; }
+.project-title a { background: linear-gradient(var(--hl), var(--hl)) 0 92% / 0 .42em no-repeat; transition: background-size .3s var(--ease); }
+.project-title a:hover { background-size: 100% .42em; }
+.project-lede { margin-top: .4rem; color: var(--ink); font-weight: 500; }
+.project-links { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-top: 1.1rem; font-size: .9375rem; }
+.live-line {
+  margin-top: 1.1rem; padding: .85rem 1rem; border-radius: var(--radius-sm);
+  background: var(--hl); color: var(--ink); font-size: .9375rem; line-height: 1.55;
+}
+.live-line b { font-family: var(--font-display); font-size: 1.0625rem; font-weight: 700; }
+.live-note { display: block; margin-top: .15rem; font-size: .8125rem; color: var(--body); }
+
+@media (min-width: 1024px) {
+  .projects { grid-template-columns: repeat(2, 1fr); gap: 1.75rem; }
+  .project-feature { grid-column: 1 / -1; flex-direction: row; }
+  .project-feature .project-media { flex: 0 0 52%; border-bottom: 0; border-right: 1px solid var(--line); }
+  .project-feature .project-media img { height: 100%; object-fit: cover; object-position: left top; }
+  .project-feature .project-body { padding: 2.25rem; justify-content: center; }
+  .project-feature .project-title { font-size: 2.125rem; }
+  .project-wide { grid-column: 1 / -1; }
+}
+
+
+/* --------------------------------------------------------------------------
+   8. TIMELINE
+   -------------------------------------------------------------------------- */
+
+.timeline { margin-top: 2.75rem; position: relative; }
+.timeline::before { content: ""; position: absolute; left: .4375rem; top: .6rem; bottom: .6rem; width: 2px; background: var(--line); }
+.tl-item { position: relative; padding: 0 0 2.5rem 2.25rem; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-item::before {
+  content: ""; position: absolute; left: 0; top: .45rem; width: 1rem; height: 1rem; border-radius: 50%;
+  background: var(--paper); border: 3px solid var(--ink);
+}
+.tl-item.is-now::before { background: var(--amber); }
+.tl-date { font-size: .875rem; color: var(--muted); }
+.tl-role { font-size: 1.375rem; margin-top: .2rem; }
+.tl-org { margin-top: .15rem; color: var(--ink); font-weight: 500; }
+.tl-list { margin-top: .9rem; display: grid; gap: .6rem; max-width: 46rem; }
+.tl-list li { position: relative; padding-left: 1.1rem; font-size: .9688rem; line-height: 1.65; }
+.tl-list li::before { content: ""; position: absolute; left: 0; top: .72em; width: .4rem; height: 2px; background: var(--ink); }
+
+.toolbox { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--line); display: grid; gap: .6rem; font-size: .9688rem; max-width: 46rem; }
+.toolbox b { color: var(--ink); font-weight: 600; }
+
+@media (min-width: 900px) {
+  .timeline::before { left: 11.4rem; }
+  .tl-item { display: grid; grid-template-columns: 11rem 1fr; gap: 0 3rem; padding-left: 0; }
+  .tl-item::before { left: 10.9375rem; }
+  .tl-date { padding-top: .4rem; text-align: right; }
+  .tl-body { padding-left: .25rem; }
+}
+
+
+/* --------------------------------------------------------------------------
+   9. CONTACT
+   -------------------------------------------------------------------------- */
+
+.contact-lede { margin-top: 1.25rem; max-width: 34rem; font-size: 1.1875rem; color: var(--ink); line-height: 1.6; }
+.link-xl {
+  display: inline-flex; align-items: center; gap: .6rem; color: var(--ink);
+  font-family: var(--font-display); font-weight: 700; letter-spacing: -.03em;
+  font-size: clamp(1.4rem, 6.2vw, 2.75rem); overflow-wrap: anywhere;
+  background: linear-gradient(var(--hl), var(--hl)) 0 92% / 100% .3em no-repeat;
+  transition: background-size .3s var(--ease);
+}
+.link-xl:hover { background-size: 100% 100%; }
+.copy-btn {
+  display: inline-flex; align-items: center; gap: .5rem; padding: .5rem .9rem;
+  border: 1.5px solid var(--line); border-radius: 999px; font-size: .875rem; color: var(--body);
   transition: border-color .2s, color .2s;
 }
-.row:hover .tag { border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); }
-
-.metric-value {
-  font-family: var(--font-display);
-  font-size: 1.75rem; line-height: 1; color: var(--ink);
-}
-.hkia-note { min-height: 1.25em; }
-@media (min-width: 1024px) { .hkia-note { text-align: right; } }
-
-.metric-label {
-  font-family: var(--font-mono);
-  font-size: .625rem; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--muted); margin-top: .375rem;
-}
+.copy-btn:hover { border-color: var(--ink); color: var(--ink); }
+.copy-btn.is-copied { border-color: var(--ink); color: var(--ink); background: var(--hl); }
+.elsewhere { display: flex; flex-wrap: wrap; gap: .75rem 1.75rem; margin-top: 2.5rem; font-size: 1rem; }
 
 
 /* --------------------------------------------------------------------------
-   7. HERO
+   10. FOOTER
    -------------------------------------------------------------------------- */
 
-/* Fluid type: never smaller than 3rem, never larger than 7.5rem, and
-   proportional to the viewport in between. No breakpoints needed. */
-.hero-name { font-size: clamp(3rem, 10vw, 7.5rem); }
-
-/* The panel to the right of your name. */
-.side-panel {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 1.75rem;
-}
-
-.side-row {
-  padding-block: .875rem;
-  border-bottom: 1px solid var(--line);
-}
-.side-row:last-of-type { border-bottom: 0; padding-bottom: 0; }
-.side-row:first-of-type { padding-top: 0; }
-
-.status-dot {
-  position: relative; display: inline-block;
-  width: .5rem; height: .5rem; border-radius: 50%; background: #16A34A;
-}
-.status-dot::after {
-  content: ""; position: absolute; inset: 0; border-radius: 50%;
-  background: #16A34A; animation: ping 2.4s cubic-bezier(0,0,.2,1) infinite;
-}
-@keyframes ping { 75%, 100% { transform: scale(2.6); opacity: 0; } }
+.site-footer { padding-block: 2.5rem; border-top: 1px solid var(--line); }
 
 
 /* --------------------------------------------------------------------------
-   8. ROWS  (projects, experience, skills, education all use this)
-   --------------------------------------------------------------------------
-   A hairline-separated list rather than a grid of boxes. Hovering a row
-   tints the background, colours the index number, and nudges the title.
-   Delete the .row:hover rules below for a completely static list.
-   -------------------------------------------------------------------------- */
-
-.row {
-  border-top: 1px solid var(--line);
-  padding-block: 2.25rem;
-  transition: background-color .35s var(--ease);
-  position: relative;
-}
-.row:last-child { border-bottom: 1px solid var(--line); }
-
-.row::before {
-  content: ""; position: absolute;
-  inset: 0 -1.5rem;
-  background: color-mix(in srgb, var(--accent) 4%, transparent);
-  opacity: 0; transition: opacity .35s var(--ease);
-  pointer-events: none; border-radius: var(--radius);
-}
-.row:hover::before { opacity: 1; }
-
-.row-num {
-  font-family: var(--font-mono);
-  font-size: .8125rem; color: var(--muted);
-  transition: color .3s;
-}
-.row:hover .row-num { color: var(--accent); }
-
-.row-title {
-  display: inline-flex; align-items: center; gap: .5rem;
-  transition: transform .35s var(--ease);
-}
-.row:hover .row-title { transform: translateX(4px); }
-
-.row-title svg {
-  opacity: 0; transform: translateX(-6px);
-  transition: opacity .3s var(--ease), transform .3s var(--ease);
-  color: var(--accent);
-}
-.row:hover .row-title svg { opacity: 1; transform: none; }
-
-
-/* Figures inside a project row. */
-.figure-img {
-  width: 100%; height: auto;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: #fff;               /* the matrix is drawn on white */
-  transition: border-color .3s var(--ease);
-}
-.row:hover .figure-img { border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); }
-
-
-/* --------------------------------------------------------------------------
-   9. SCROLL REVEAL
-   --------------------------------------------------------------------------
-   Anything marked  data-reveal  fades up as it scrolls into view.
-   Remove the attribute from an element to make it appear instantly.
-   -------------------------------------------------------------------------- */
-
-/* Cap paragraph width in CHARACTERS, not pixels. Past roughly 70 characters
-   the eye loses its place coming back to the start of the next line. This is
-   the reason a site cannot simply stretch to fill any width: the container can
-   grow, but a block of prose should not grow with it.
-
-   Newspapers use columns for exactly this reason. */
-.row .body, .row ul { max-width: 62ch; }
-.lede { max-width: 34ch; }
-
-
-[data-reveal] {
-  opacity: 0; transform: translateY(14px);
-  transition: opacity .6s var(--ease), transform .6s var(--ease);
-}
-[data-reveal].is-visible { opacity: 1; transform: none; }
-
-/* A shorter row, used by the Skills list. */
-.row-tight { padding-block: 1.5rem; }
-
-/* --------------------------------------------------------------------------
-   SHOW/HIDE BY SCREEN SIZE
-   --------------------------------------------------------------------------
-   768px is the breakpoint between "phone/tablet" and "laptop". Below it the
-   nav collapses to a hamburger; above it the links show inline.
-
-   These are plain CSS rather than Tailwind's md:hidden because a rule in this
-   file that sets `display` will beat a Tailwind utility, and the hamburger
-   ended up visible on desktop as a result.
-   -------------------------------------------------------------------------- */
-
-.only-desktop { display: none; }
-.only-mobile  { display: flex; }
-
-@media (min-width: 768px) {
-  .only-desktop { display: flex; }
-  .only-mobile  { display: none; }
-}
-
-/* Mobile dropdown panel. JS toggles .is-closed. */
-#mobile-menu {
-  background: var(--paper);
-  border-top: 1px solid var(--line);
-  flex-direction: column;
-}
-#mobile-menu.is-closed { display: none; }
-
-
-/* --------------------------------------------------------------------------
-   PRINT
-   --------------------------------------------------------------------------
-   Someone will save this page as a PDF or print it — recruiters do. Without
-   these rules they would get the dark theme's ink-heavy background, a nav bar
-   floating over the text, and links whose destinations are invisible on paper.
+   11. PRINT
    -------------------------------------------------------------------------- */
 
 @media print {
-  /* Always print on white, whatever theme was on screen. */
-  :root, .dark {
-    --paper: #fff; --surface: #fff; --ink: #000; --body: #222;
-    --muted: #555; --line: #ccc; --accent: #000; --accent-2: #000;
-  }
-
-  #nav, #mobile-menu, #theme-toggle, #menu-toggle, #copy-email,
-  .skip-link, footer a { display: none !important; }
-
-  /* Nothing hidden, nothing animated, nothing stuck to a viewport that
-     does not exist on paper. */
+  .site-header, .skip-link, .board, .site-footer a, .copy-btn { display: none !important; }
+  body { background: #fff; color: #000; }
   [data-reveal] { opacity: 1 !important; transform: none !important; }
-  .lg\:sticky   { position: static !important; }
-  #home         { min-height: 0 !important; padding-block: 0 2rem !important; }
-  .section      { padding-block: 1.5rem !important; break-inside: avoid; }
-  .row          { break-inside: avoid; }
-  .row::before  { display: none; }
-
-  /* Print the destination of every external link after its text, so the page
-     is still useful once it is on paper. */
-  a[href^="http"]::after,
-  a[href^="mailto"]::after {
-    content: " (" attr(href) ")";
-    font-family: var(--font-mono);
-    font-size: .7em;
-    color: #555;
-    word-break: break-all;
-  }
-
-  body { font-size: 11pt; }
+  .section { padding-block: 1.5rem; }
+  .card, .project { break-inside: avoid; }
 }

@@ -11,16 +11,14 @@
 <style>
   @font-face { font-family:"Inter"; font-weight:400 600; font-display:swap;
                src:url("/assets/fonts/inter-variable.woff2") format("woff2"); }
-  @font-face { font-family:"Instrument Serif"; font-weight:400; font-display:swap;
-               src:url("/assets/fonts/instrument-serif-400.woff2") format("woff2"); }
-  @font-face { font-family:"JetBrains Mono"; font-weight:400; font-display:swap;
-               src:url("/assets/fonts/jetbrains-mono-400.woff2") format("woff2"); }
+  @font-face { font-family:"Bricolage Grotesque"; font-weight:200 800; font-display:swap;
+               src:url("/assets/fonts/bricolage-grotesque-variable.woff2") format("woff2"); }
 </style>
 <style>
   /* Same palette as css/styles.css — keep these in step if you change it. */
-  :root { --paper:#FBFAF8; --ink:#17171A; --body:#4A4A50; --muted:#8A8A90; --accent:#9A3412; }
+  :root { --paper:#F6F4EF; --ink:#14161A; --body:#3A3E46; --muted:#596069; --accent:#FFB703; }
   @media (prefers-color-scheme: dark) {
-    :root { --paper:#121110; --ink:#F2F0EB; --body:#ACA79E; --muted:#78736B; --accent:#E8845C; }
+    :root { --paper:#0F1012; --ink:#F3F1EA; --body:#BDBAB2; --muted:#9A978F; --accent:#FFC53D; }
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
@@ -28,10 +26,8 @@
     background:var(--paper); color:var(--body);
     font-family:Inter, system-ui, sans-serif; -webkit-font-smoothing:antialiased;
   }
-  .code { font-family:"JetBrains Mono",monospace; font-size:.6875rem; letter-spacing:.14em;
-          text-transform:uppercase; color:var(--accent); margin-bottom:1rem; }
-  h1 { font-family:"Instrument Serif",serif; font-size:clamp(3.5rem,12vw,7rem); line-height:1;
-       color:var(--ink); letter-spacing:-.02em; font-weight:400; margin-bottom:1rem; }
+  h1 { font-family:"Bricolage Grotesque",sans-serif; font-size:clamp(3.5rem,12vw,7rem); line-height:1;
+       color:var(--ink); letter-spacing:-.04em; font-weight:800; margin-bottom:1rem; }
   p { font-size:1.0625rem; line-height:1.7; margin-bottom:2rem; }
   a { color:var(--ink); text-decoration:none; font-weight:500;
       border-bottom:1px solid var(--accent); padding-bottom:2px; transition:color .2s; }
@@ -41,9 +37,8 @@
 </head>
 <body>
   <div class="wrap">
-    <p class="code">Error 404</p>
-    <h1>Not found</h1>
-    <p>That page does not exist — most likely a mistyped address or a link that has moved.</p>
+    <h1>Lost at the gate.</h1>
+    <p>That page does not exist. Most likely a mistyped address, or a link that has moved.</p>
     <a href="/">Back to darrenwongsj.dev</a>
   </div>
 </body>
